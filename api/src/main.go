@@ -14,28 +14,14 @@ func healthCheck(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode("Still alive!")
 }
 
-func handleQryMessage(w http.ResponseWriter, r *http.Request) {
-	vars := r.URL.Query()      // Gets data in the query string
-	message := vars.Get("msg") // Looks for a msg in query string data ?msg=hola
-
-	// Can also get data from POST request
-	// message := r.FormValue("msg")
-
-	json.NewEncoder(w).Encode(map[string]string{"message": message})
-}
-
-func handleUrlMessage(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	message := vars["msg"]
-
-	json.NewEncoder(w).Encode(map[string]string{"message": message})
+func questionsList(w http.ResponseWriter, r *http.Request) {
+	json.NewEncoder(w).Encode(QuestionsList())
 }
 
 func main() {
 	var router = mux.NewRouter()
 	router.HandleFunc("/healthcheck", healthCheck).Methods("GET")
-	router.HandleFunc("/message", handleQryMessage).Methods("GET")
-	router.HandleFunc("/m/{msg}", handleUrlMessage).Methods("GET")
+	router.HandleFunc("/questions", questionsList).Methods("GET")
 
 	headersOk := handlers.AllowedHeaders([]string{"Authorization"})
 	originsOk := handlers.AllowedOrigins([]string{"*"})
