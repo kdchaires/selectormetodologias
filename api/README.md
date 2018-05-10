@@ -35,5 +35,5 @@ dependencias en la carpeta `vendor/`. Si el `$GOPATH` del sistema está
 correctamente configurado podrá iniciar la aplicación con el comando:
 
 ``` sh
-$ go run src/main.go
+$ go run src/*.go
 ```
