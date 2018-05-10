@@ -1,0 +1,629 @@
+FORMAT: 1A
+
+# Selector Metodologías
+
+El selector de metodologías sugiere una metodología de software a utilizar en
+un proyecto de software en base a las necesidades y contexto de dicho proyecto.
+
+# Group Preguntas
+
+## Colección de Preguntas [/questions]
+
+### Listar todas las preguntas [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "question": "Es el presupuesto para el proyecto limitado?",
+                "criteria": "Dimensión del proyecto",
+                "published_at": "2015-08-05T08:40:51.620Z",
+                "evaluations":
+                [
+                    {
+                        "methodology": 1,
+                        "evaluation": 3
+                    },
+                    {
+                        "methodology": 2,
+                        "evaluation": 1
+                    },
+                    {
+                        "methodology": 3,
+                        "evaluation": 5
+                    }
+                ],
+                "choices": [
+                    {
+                        "id": 1,
+                        "choice": "Si",
+                    }, {
+                        "id": 0,
+                        "choice": "No",
+                    }
+                ]
+            }
+        ]
+
+### Crear nueva pregunta [POST]
+
++ Request (application/json)
+
+        {
+            "question": "La dimensión del proyecto se considera grande?",
+            "evaluations":
+            [
+                {
+                    "methodology": 1,
+                    "evaluation": 3
+                },
+                {
+                    "methodology": 2,
+                    "evaluation": 1
+                },
+                {
+                    "methodology": 3,
+                    "evaluation": 5
+                }
+            ],
+            "choices": [
+                "Si",
+                "No"
+            ]
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /questions/2
+
+    + Body
+
+            {
+                "id": 2,
+                "question": "La dimensión del proyecto se considera grande?",
+                "published_at": "2015-08-05T08:40:51.620Z",
+                "evaluations":
+                [
+                    {
+                        "methodology": 1,
+                        "evaluation": 3
+                    },
+                    {
+                        "methodology": 2,
+                        "evaluation": 1
+                    },
+                    {
+                        "methodology": 3,
+                        "evaluation": 5
+                    }
+                ],
+                "choices": [
+                    {
+                        "id": 1,
+                        "choice": "Si"
+                    }, {
+                        "id": 0,
+                        "choice": "No"
+                    }
+                ]
+            }
+
+
+## Pregunta [/questions/{question_id}]
+
++ Parameters
+    + question_id: `1` (number, required) - ID numérico de la pregunta que desea manipular.
+
+### Consultar detalles de una pregunta [GET]
+
++ Response 200 (application/json)
+
+        {
+            "id": 2,
+            "question": "La dimensión del proyecto se considera grande?",
+            "published_at": "2015-08-05T08:40:51.620Z",
+            "evaluations":
+            [
+                {
+                    "methodology": 1,
+                    "evaluation": 3
+                },
+                {
+                    "methodology": 2,
+                    "evaluation": 1
+                },
+                {
+                    "methodology": 3,
+                    "evaluation": 5
+                }
+            ],
+            "choices": [
+                {
+                    "id": 1,
+                    "choice": "Si"
+                }, {
+                    "id": 0,
+                    "choice": "No"
+                }
+            ]
+        }
+
+### Editar una pregunta [PUT]
+
++ Request (application/json)
+
+        {
+            "id": 1,
+            "question": "La dimensión del proyecto se considera amplia?",
+            "evaluations":
+            [
+                {
+                    "methodology": 1,
+                    "evaluation": 1
+                },
+                {
+                    "methodology": 2,
+                    "evaluation": 5
+                },
+                {
+                    "methodology": 3,
+                    "evaluation": 3
+                }
+            ],
+            "choices": [
+                {
+                    "id": 1,
+                    "choice": "Si",
+                }, {
+                    "id": 0,
+                    "choice": "No",
+                }
+            ]
+        }
+
++ Response 200 (application/json)
+
+        {
+            "id": 2,
+            "question": "La dimensión del proyecto se considera grande?",
+            "published_at": "2015-08-05T08:40:51.620Z",
+            "evaluations":
+            [
+                {
+                    "methodology": 1,
+                    "evaluation": 1
+                },
+                {
+                    "methodology": 2,
+                    "evaluation": 5
+                },
+                {
+                    "methodology": 3,
+                    "evaluation": 3
+                }
+            ],
+            "choices": [
+                {
+                    "id": 1,
+                    "choice": "Si",
+                }, {
+                    "id": 0,
+                    "choice": "No",
+                }
+            ]
+        }
+
+### Eliminar una pregunta [DELETE]
+
++ Response 204
+
+
+# Group Metodologías
+
+## Colección de Metodologías [/methodologies]
+
+### Listar todas las metodologías [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 223,
+                "name": "Scrum",
+                "links": [
+                    {
+                        "href": "methodologies/223",
+                        "rel": "self",
+                        "type": "GET"
+                    }
+                ]
+            },
+            {
+                "id": 221,
+                "name": "Xtreme Programming",
+                "links": [
+                    {
+                        "href": "methodologies/221",
+                        "rel": "self",
+                        "type": "GET"
+                    }
+                ]
+            }
+        ]
+
+### Crear una metodología [POST]
+
++ Request (application/json)
+
+        {
+            "name": "Rup",
+            "abstract": "Bla bla bla bla",
+            "diagrams": {
+                "process": "http://....../rup/process.png",
+                "roles": "http://......../rup/roles.jpg",
+                "artifacts": "http://......../rup/artifacts.jpeg",
+                "practices": "http://......../rup/practices.jpeg",
+            },
+            "description": {
+                "process": "Bla bla bla bla bla",
+                "roles": [
+                    {
+                        "name": "Senior developer",
+                        "description": "Bla bla bla bla",
+                        "image": "http://...../rup/role/1/avatar.jpg",
+                        "produces_artifact": 1
+                    },
+                    {
+                        "name": "Team leader",
+                        "description": "Bla bla bla bla",
+                        "image": "http://...../rup/role/2/avatar.jpg",
+                        "produces_artifact": null
+                    }
+                ],
+                "artifacts": [
+                    {
+                        "id": 1,
+                        "name": "Code documentation",
+                        "description": "Bla bla bal",
+                        "image": "http://..../rup/artifact/1/documentation.jpg"
+                    }
+                ],
+                "practices": [
+                    {
+                        "name": "Pair programming",
+                        "description": "Bla bla bla",
+                        "image": "http://....../rup/practices/1/ppg.png"
+                        "produces_artifact": null,
+                    },
+                    {
+                        "tdd": "Test driven development",
+                        "description": "Bla bla bla",
+                        "image": "http://...../rup/practices/2/tdd.jpeg",
+                        "produces_artifact": 1
+                    }
+                ]
+            }
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /methodologies/3
+
+    + Body
+
+            {
+                "id": 3,
+                "name": "Rup",
+                "abstract": "Bla bla bla bla",
+                "diagrams": {
+                    "process": "http://....../rup/process.png",
+                    "roles": "http://......../rup/roles.jpg",
+                    "artifacts": "http://......../rup/artifacts.jpeg",
+                    "practices": "http://......../rup/practices.jpeg",
+                },
+                "description": {
+                    "process": "Bla bla bla bla bla",
+                    "roles": [
+                        {
+                            "name": "Senior developer",
+                            "description": "Bla bla bla bla",
+                            "image": "http://...../rup/role/1/avatar.jpg",
+                            "produces_artifact": 1
+                        },
+                        {
+                            "name": "Team leader",
+                            "description": "Bla bla bla bla",
+                            "image": "http://...../rup/role/2/avatar.jpg",
+                            "produces_artifact": null
+                        }
+                    ],
+                    "artifacts": [
+                        {
+                            "id": 1,
+                            "name": "Code documentation",
+                            "description": "Bla bla bal",
+                            "image": "http://..../rup/artifact/1/documentation.jpg"
+                        }
+                    ],
+                    "practices": [
+                        {
+                            "name": "Pair programming",
+                            "description": "Bla bla bla",
+                            "image": "http://....../rup/practices/1/ppg.png"
+                            "produces_artifact": null,
+                        },
+                        {
+                            "tdd": "Test driven development",
+                            "description": "Bla bla bla",
+                            "image": "http://...../rup/practices/2/tdd.jpeg",
+                            "produces_artifact": 1
+                        }
+                    ]
+                }
+            }
+
+## Metodología [/methodologies/{methodology_id}]
+
++ Parameters
+    + methodology_id: `1` (number, required) - ID numérico de la metodología que desea manipular.
+
+### Consultar detalles de una metodología [GET]
+
++ Response 200 (application/json)
+
+        {
+            "id": 223,
+            "name": "Rup",
+            "abstract": "Bla bla bla bla",
+            "diagrams": {
+                "process": "http://....../rup/process.png",
+                "roles": "http://......../rup/roles.jpg",
+                "artifacts": "http://......../rup/artifacts.jpeg",
+                "practices": "http://......../rup/practices.jpeg",
+            },
+            "description": {
+                "process": "Bla bla bla bla bla",
+                "roles": [
+                    {
+                        "name": "Senior developer",
+                        "description": "Bla bla bla bla",
+                        "image": "http://...../rup/role/1/avatar.jpg",
+                        "produces_artifact": 1
+                    },
+                    {
+                        "name": "Team leader",
+                        "description": "Bla bla bla bla",
+                        "image": "http://...../rup/role/2/avatar.jpg",
+                        "produces_artifact": null
+                    }
+                ],
+                "artifacts": [
+                    {
+                        "id": 1,
+                        "name": "Code documentation",
+                        "description": "Bla bla bal",
+                        "image": "http://..../rup/artifact/1/documentation.jpg"
+                    }
+                ],
+                "practices": [
+                    {
+                        "name": "Pair programming",
+                        "description": "Bla bla bla",
+                        "image": "http://....../rup/practices/1/ppg.png"
+                        "produces_artifact": null,
+                    },
+                    {
+                        "tdd": "Test driven development",
+                        "description": "Bla bla bla",
+                        "image": "http://...../rup/practices/2/tdd.jpeg",
+                        "produces_artifact": 1
+                    }
+                ]
+            }
+        }
+
+### Editar una metodología [PUT]
+
++ Request (application/json)
+
+        {
+            "name": "Rup",
+            "abstract": "This is the abstract for this methodology."
+            "description": {
+                "process": "Bla bla bla bla bla",
+            }
+        }
+
++ Response 200 (application/json)
+
+        {
+            "id": 223,
+            "name": "Rup",
+            "abstract": "This is the abstract for this methodology.",
+            "diagrams": {
+                "process": "http://....../rup/process.png",
+                "roles": "http://......../rup/roles.jpg",
+                "artifacts": "http://......../rup/artifacts.jpeg",
+                "practices": "http://......../rup/practices.jpeg",
+            },
+            "description": {
+                "process": "Bla bla bla bla bla",
+                "roles": [
+                    {
+                        "name": "Senior developer",
+                        "description": "Bla bla bla bla",
+                        "image": "http://...../rup/role/1/avatar.jpg",
+                        "produces_artifact": 1
+                    },
+                    {
+                        "name": "Team leader",
+                        "description": "Bla bla bla bla",
+                        "image": "http://...../rup/role/2/avatar.jpg",
+                        "produces_artifact": null
+                    }
+                ],
+                "artifacts": [
+                    {
+                        "id": 1,
+                        "name": "Code documentation",
+                        "description": "Bla bla bal",
+                        "image": "http://..../rup/artifact/1/documentation.jpg"
+                    }
+                ],
+                "practices": [
+                    {
+                        "name": "Pair programming",
+                        "description": "Bla bla bla",
+                        "image": "http://....../rup/practices/1/ppg.png"
+                        "produces_artifact": null,
+                    },
+                    {
+                        "tdd": "Test driven development",
+                        "description": "Bla bla bla",
+                        "image": "http://...../rup/practices/2/tdd.jpeg",
+                        "produces_artifact": 1
+                    }
+                ]
+            }
+        }
+
+
+### Eliminar una metodología [DELETE]
+
+
+
++ Response 204
+
+# Group Feedback
+
+## Colección de Feedback [/feedback]
+
+### Listar las entradas en Feedback [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": "4k0f4c31aaa35d6b867dae9a7f5427t3",
+                "institution": "UAZ",
+                "email": "algo@mail.com",
+                "description": "Bla bla bla bla"
+            },
+            {
+                "id": "3t7245f7a9ead768b6d53aaa13c4f0k4",
+                "institution": "ITZ",
+                "email": "otro@mail.com",
+                "description": "Bla bla bla bla"
+            },
+        ]
+
+### Enviar feedback [POST]
+
++ Request (application/json)
+
+        {
+            "institution": "UAZ",
+            "email": "algo@mail.com",
+            "description": "Bla bla bla bla"
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /feedback/4k0f4c31aaa35d6b867dae9a7f5427t3
+
+    + Body
+
+            {
+                "id": "4k0f4c31aaa35d6b867dae9a7f5427t3",
+                "institution": "UAZ",
+                "email": "algo@mail.com",
+                "description": "Bla bla bla bla"
+            }
+
+## Feedback [/feedback/{feedback_id}]
+
++ Parameters
+    + feedback_id: `4k0f4c31aaa35d6b867dae9a7f5427t3` (string, required) -
+      Cadena de identificación de la retroalimentación que desea manipular.
+
+### Consultar una retroalimentación [GET]
+
++ Response 200 (application/json)
+
+        {
+            "id": "4k0f4c31aaa35d6b867dae9a7f5427t3",
+            "institution": "UAZ",
+            "email": "algo@mail.com",
+            "description": "Bla bla bla bla"
+        }
+
+### Editar una retroalimentación [PUT]
+
++ Request (application/json)
+
+        {
+            "description": "There's a meaning in this message."
+        }
+
++ Response 200 (application/json)
+
+        {
+            "id": "4k0f4c31aaa35d6b867dae9a7f5427t3",
+            "institution": "UAZ",
+            "email": "algo@mail.com",
+            "description": "There's a meaning in this message."
+        }
+
+### Eliminar una retroalimentación [DELETE]
+
++ Response 204
+
+
+# Group Sugerencia
+
+## Colección de recomendación [/suggest]
+
+### Generar una recomendación [POST]
+
+
++ Request (application/json)
+
+        {
+            "answers": [
+                {
+                    "question": 1,
+                    "answer": 0
+                },
+                {
+                    "question": 2,
+                    "answer": 1
+                }
+            ]
+        }
+
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /suggest/916f4c31aaa35d6b867dae9a7f54270d
+
+    + Body
+
+            {
+                "name": "Scrum",
+                "links": [
+                    {
+                        "href": "methodologies/223",
+                        "rel": "methodologies",
+                        "type": "GET"
+                    }
+                ]
+            }
