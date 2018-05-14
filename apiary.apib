@@ -18,7 +18,6 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
                 "id": 1,
                 "question": "Es el presupuesto para el proyecto limitado?",
                 "criteria": "Dimensión del proyecto",
-                "published_at": "2015-08-05T08:40:51.620Z",
                 "evaluations":
                 [
                     {
@@ -33,20 +32,19 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
                         "methodology": 3,
                         "evaluation": 5
                     }
-                ],
-                "choices": [
-                    {
-                        "id": 1,
-                        "choice": "Si",
-                    }, {
-                        "id": 0,
-                        "choice": "No",
-                    }
                 ]
             }
         ]
 
 ### Crear nueva pregunta [POST]
+
++ Attributes
+
+    + question: ¿La dimesión del proyecto se considera grande? (string) - Pregunta que se añadirá al sistema.
+    + evaluations (array) - Lista con la ponderación de la pregunta para cada metodología. Si la lista esta incompleta se dará una ponderación por default de `0` para las metodologías no específicadas.
+        + (object)
+            + methodology: 1 (string) - ID de la metodología a la que corresponde la ponderación.
+            + evaluation: 3 (string) - Ponderación dada a la metodología para esta pregunta. El valor dado debe estar en el rango `[1..5]` si se especifica otro valor se producirá un error.
 
 + Request (application/json)
 
@@ -66,10 +64,6 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
                     "methodology": 3,
                     "evaluation": 5
                 }
-            ],
-            "choices": [
-                "Si",
-                "No"
             ]
         }
 
@@ -84,7 +78,6 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
             {
                 "id": 2,
                 "question": "La dimensión del proyecto se considera grande?",
-                "published_at": "2015-08-05T08:40:51.620Z",
                 "evaluations":
                 [
                     {
@@ -98,15 +91,6 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
                     {
                         "methodology": 3,
                         "evaluation": 5
-                    }
-                ],
-                "choices": [
-                    {
-                        "id": 1,
-                        "choice": "Si"
-                    }, {
-                        "id": 0,
-                        "choice": "No"
                     }
                 ]
             }
@@ -124,7 +108,6 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
         {
             "id": 2,
             "question": "La dimensión del proyecto se considera grande?",
-            "published_at": "2015-08-05T08:40:51.620Z",
             "evaluations":
             [
                 {
@@ -139,24 +122,24 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
                     "methodology": 3,
                     "evaluation": 5
                 }
-            ],
-            "choices": [
-                {
-                    "id": 1,
-                    "choice": "Si"
-                }, {
-                    "id": 0,
-                    "choice": "No"
-                }
             ]
         }
 
 ### Editar una pregunta [PUT]
 
+Solo se modificarán los atributos específicados en el request.
+
++ Attributes
+
+    + question: ¿La dimesión del proyecto se considera amplia? (string) - Pregunta con la modificiación que se actualizará en el sistema.
+    + evaluations (array) - Lista con la ponderación de la pregunta para cada metodología.
+        + (object).
+            + methodology: 1 (string) - ID de la metodología a la que corresponde la ponderación.
+            + evaluation: 3 (string) - Ponderación dada a la metodología para esta pregunta. El valor dado debe estar en el rango `[1..5]` si se especifica otro valor se producirá un error.
+
 + Request (application/json)
 
         {
-            "id": 1,
             "question": "La dimensión del proyecto se considera amplia?",
             "evaluations":
             [
@@ -172,15 +155,6 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
                     "methodology": 3,
                     "evaluation": 3
                 }
-            ],
-            "choices": [
-                {
-                    "id": 1,
-                    "choice": "Si",
-                }, {
-                    "id": 0,
-                    "choice": "No",
-                }
             ]
         }
 
@@ -189,7 +163,6 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
         {
             "id": 2,
             "question": "La dimensión del proyecto se considera grande?",
-            "published_at": "2015-08-05T08:40:51.620Z",
             "evaluations":
             [
                 {
@@ -203,15 +176,6 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
                 {
                     "methodology": 3,
                     "evaluation": 3
-                }
-            ],
-            "choices": [
-                {
-                    "id": 1,
-                    "choice": "Si",
-                }, {
-                    "id": 0,
-                    "choice": "No",
                 }
             ]
         }
@@ -261,26 +225,55 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
         {
             "name": "Rup",
             "abstract": "Bla bla bla bla",
+            "quality_features": "Bla bla bla bla",
+            "info": "http://..../rup.html",
+            "type": "tradicional",
+            "model": "espiral",
             "diagrams": {
                 "process": "http://....../rup/process.png",
                 "roles": "http://......../rup/roles.jpg",
                 "artifacts": "http://......../rup/artifacts.jpeg",
-                "practices": "http://......../rup/practices.jpeg",
+                "practices": "http://......../rup/practices.jpeg"
             },
             "description": {
-                "process": "Bla bla bla bla bla",
+                "process": [
+                    {
+                        "stage": 1,
+                        "name": "Inception",
+                        "description": "The idea for the project is stated. The development team determines...",
+                        "image": "http://...../rup/stage/1/inception.jpg"
+                    },
+                    {
+                        "stage": 2,
+                        "name": "Elaboration",
+                        "description": "The project's architecture and required resources are further evaluated...",
+                        "image": "http://...../rup/stage/2/elaboration.jpg"
+                    },
+                    {
+                        "stage": 3,
+                        "name": "Construction",
+                        "description": "The project is developed and completed.",
+                        "image": "http://...../rup/stage/3/construction.jpg"
+                    },
+                    {
+                        "stage": 4,
+                        "name": "Transition",
+                        "description": "The software is released to the public",
+                        "image": "http://...../rup/stage/4/transition.jpg"
+                    }
+                ],
                 "roles": [
                     {
                         "name": "Senior developer",
                         "description": "Bla bla bla bla",
                         "image": "http://...../rup/role/1/avatar.jpg",
-                        "produces_artifact": 1
+                        "produces_artifact": "Pruebas automatizadas"
                     },
                     {
                         "name": "Team leader",
                         "description": "Bla bla bla bla",
                         "image": "http://...../rup/role/2/avatar.jpg",
-                        "produces_artifact": null
+                        "produces_artifact": ""
                     }
                 ],
                 "artifacts": [
@@ -296,19 +289,31 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
                         "name": "Pair programming",
                         "description": "Bla bla bla",
                         "image": "http://....../rup/practices/1/ppg.png"
-                        "produces_artifact": null,
                     },
                     {
                         "tdd": "Test driven development",
                         "description": "Bla bla bla",
-                        "image": "http://...../rup/practices/2/tdd.jpeg",
-                        "produces_artifact": 1
+                        "image": "http://...../rup/practices/2/tdd.jpeg"
                     }
+                ],
+                "tips": [
+                    {
+                        "description": "Bla bla bla",
+                    },
+                ],
+                "tools": [
+                    {
+                        "name": "Trello",
+                        "description": "Bla bla bla",
+                        "link": "http://trello.com"
+                    },
                 ]
             }
         }
 
 + Response 201 (application/json)
+
+    Cambiar "produces artifact"
 
     + Headers
 
@@ -320,6 +325,10 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
                 "id": 3,
                 "name": "Rup",
                 "abstract": "Bla bla bla bla",
+                "info": "http://..../rup.html",
+                "type": "tradicional",
+                "quality_features": "Bla bla bla bla",
+                "model": "espiral",
                 "diagrams": {
                     "process": "http://....../rup/process.png",
                     "roles": "http://......../rup/roles.jpg",
@@ -327,7 +336,32 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
                     "practices": "http://......../rup/practices.jpeg",
                 },
                 "description": {
-                    "process": "Bla bla bla bla bla",
+                    "process": [
+                        {
+                            "stage": 1,
+                            "name": "Inception",
+                            "description": "The idea for the project is stated. The development team determines...",
+                            "image": "http://...../rup/stage/1/inception.jpg"
+                        },
+                        {
+                            "stage": 2,
+                            "name": "Elaboration",
+                            "description": "The project's architecture and required resources are further evaluated...",
+                            "image": "http://...../rup/stage/2/elaboration.jpg"
+                        },
+                        {
+                            "stage": 3,
+                            "name": "Construction",
+                            "description": "The project is developed and completed.",
+                            "image": "http://...../rup/stage/3/construction.jpg"
+                        },
+                        {
+                            "stage": 4,
+                            "name": "Transition",
+                            "description": "The software is released to the public",
+                            "image": "http://...../rup/stage/4/transition.jpg"
+                        }
+                    ],
                     "roles": [
                         {
                             "name": "Senior developer",
@@ -380,6 +414,10 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
             "id": 223,
             "name": "Rup",
             "abstract": "Bla bla bla bla",
+            "quality_features": "Bla bla bla bla",
+            "info": "http://..../rup.html",
+            "type": "tradicional",
+            "model": "espiral",
             "diagrams": {
                 "process": "http://....../rup/process.png",
                 "roles": "http://......../rup/roles.jpg",
@@ -387,7 +425,32 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
                 "practices": "http://......../rup/practices.jpeg",
             },
             "description": {
-                "process": "Bla bla bla bla bla",
+                "process": [
+                    {
+                        "stage": 1,
+                        "name": "Inception",
+                        "description": "The idea for the project is stated. The development team determines...",
+                        "image": "http://...../rup/stage/1/inception.jpg"
+                    },
+                    {
+                        "stage": 2,
+                        "name": "Elaboration",
+                        "description": "The project's architecture and required resources are further evaluated...",
+                        "image": "http://...../rup/stage/2/elaboration.jpg"
+                    },
+                    {
+                        "stage": 3,
+                        "name": "Construction",
+                        "description": "The project is developed and completed.",
+                        "image": "http://...../rup/stage/3/construction.jpg"
+                    },
+                    {
+                        "stage": 4,
+                        "name": "Transition",
+                        "description": "The software is released to the public",
+                        "image": "http://...../rup/stage/4/transition.jpg"
+                    }
+                ],
                 "roles": [
                     {
                         "name": "Senior developer",
@@ -445,6 +508,10 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
             "id": 223,
             "name": "Rup",
             "abstract": "This is the abstract for this methodology.",
+            "quality_features": "Bla bla bla bla",
+            "info": "http://..../rup.html",
+            "type": "tradicional",
+            "model": "espiral",
             "diagrams": {
                 "process": "http://....../rup/process.png",
                 "roles": "http://......../rup/roles.jpg",
@@ -452,7 +519,32 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
                 "practices": "http://......../rup/practices.jpeg",
             },
             "description": {
-                "process": "Bla bla bla bla bla",
+                "process": [
+                    {
+                        "stage": 1,
+                        "name": "Inception",
+                        "description": "The idea for the project is stated. The development team determines...",
+                        "image": "http://...../rup/stage/1/inception.jpg"
+                    },
+                    {
+                        "stage": 2,
+                        "name": "Elaboration",
+                        "description": "The project's architecture and required resources are further evaluated...",
+                        "image": "http://...../rup/stage/2/elaboration.jpg"
+                    },
+                    {
+                        "stage": 3,
+                        "name": "Construction",
+                        "description": "The project is developed and completed.",
+                        "image": "http://...../rup/stage/3/construction.jpg"
+                    },
+                    {
+                        "stage": 4,
+                        "name": "Transition",
+                        "description": "The software is released to the public",
+                        "image": "http://...../rup/stage/4/transition.jpg"
+                    }
+                ],
                 "roles": [
                     {
                         "name": "Senior developer",
@@ -495,8 +587,6 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
 
 ### Eliminar una metodología [DELETE]
 
-
-
 + Response 204
 
 # Group Feedback
@@ -511,13 +601,17 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
             {
                 "id": "4k0f4c31aaa35d6b867dae9a7f5427t3",
                 "institution": "UAZ",
+                "created_at": "2013-10-02T01:11:18.965Z",
                 "email": "algo@mail.com",
+                "finished": 0,
                 "description": "Bla bla bla bla"
             },
             {
                 "id": "3t7245f7a9ead768b6d53aaa13c4f0k4",
                 "institution": "ITZ",
+                "created_at": "2013-10-02T01:11:18.965Z",
                 "email": "otro@mail.com",
+                "finished": 0,
                 "description": "Bla bla bla bla"
             },
         ]
@@ -528,8 +622,7 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
 
         {
             "institution": "UAZ",
-            "email": "algo@mail.com",
-            "description": "Bla bla bla bla"
+            "email": "algo@mail.com"
         }
 
 + Response 201 (application/json)
@@ -543,8 +636,7 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
             {
                 "id": "4k0f4c31aaa35d6b867dae9a7f5427t3",
                 "institution": "UAZ",
-                "email": "algo@mail.com",
-                "description": "Bla bla bla bla"
+                "email": "algo@mail.com"
             }
 
 ## Feedback [/feedback/{feedback_id}]
@@ -559,8 +651,10 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
 
         {
             "id": "4k0f4c31aaa35d6b867dae9a7f5427t3",
+            "created_at": "2013-10-02T01:11:18.965Z",
             "institution": "UAZ",
             "email": "algo@mail.com",
+            "finished": 1,
             "description": "Bla bla bla bla"
         }
 
@@ -576,8 +670,10 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
 
         {
             "id": "4k0f4c31aaa35d6b867dae9a7f5427t3",
+            "created_at": "2013-10-02T01:11:18.965Z",
             "institution": "UAZ",
             "email": "algo@mail.com",
+            "finished": 1,
             "description": "There's a meaning in this message."
         }
 
@@ -592,21 +688,27 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
 
 ### Generar una recomendación [POST]
 
+- Si el `value` indicado para cualquier respuesta en la petición no es `1` o `0` se producirá un error, ya que por ahora las preguntas son de respuesta binaria.
+
+- Si no se especifica una pregunta se asume que se contestó `0` (`No`).
+
++ Attributes (array)
+    + (object)
+        + question: 1 (number) - ID de la pregunta a la cual corresponde la respuesta (`value`) asociada.
+        + value: 0 (number) - `0` indica `No` y `1` indica `Si`.
 
 + Request (application/json)
 
-        {
-            "answers": [
-                {
-                    "question": 1,
-                    "answer": 0
-                },
-                {
-                    "question": 2,
-                    "answer": 1
-                }
-            ]
-        }
+        [
+            {
+                "question": 1,
+                "value": 0
+            },
+            {
+                "question": 2,
+                "value": 1
+            }
+        ]
 
 
 + Response 201 (application/json)
@@ -619,6 +721,7 @@ un proyecto de software en base a las necesidades y contexto de dicho proyecto.
 
             {
                 "name": "Scrum",
+                "score" 23,
                 "links": [
                     {
                         "href": "methodologies/223",
