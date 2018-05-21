@@ -4,7 +4,12 @@ import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
 import Html.Attributes as Html
-import Questions exposing (..)
+import Http
+import Http exposing (get, Error, Response, Error(..))
+
+
+--import Questions exposing (..)
+
 import Material
 import Material.Scheme
 import Material.Button as Button
@@ -15,6 +20,8 @@ import Material.List as Lists
 import Material.Icon as Icon
 import Material.Typography as Typo
 import Material.Badge as Badge
+import Json.Decode exposing (int, string, float, nullable, Decoder)
+import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded)
 
 
 main : Program Never Model Msg
@@ -31,34 +38,63 @@ main =
 -- model
 
 
+type alias Mdl =
+    Material.Model
+
+
+type alias Questions =
+    { question : String
+    , criteria : String
+    , choices : String
+    }
+
+
 type alias Model =
     { index : Int
-    , questions : List Question
+    , questions : List Questions
     , score : Int
     , mdl : Material.Model
     }
 
 
-type alias Mdl =
-    Material.Model
-
-
 init : ( Model, Cmd Msg )
 init =
-    ( { index = 0
-      , questions = Questions.question
-      , score = 0
-      , mdl = Material.model
-      }
-    , Cmd.none
-    )
+    { index = 0
+    , score = 0
+    , mdl = Material.model
+    , questions = []
+    }
+        ! [ questionsRequest ]
+
+
+questionListDecoder : Json.Decode.Decoder (List Questions)
+questionListDecoder =
+    Json.Decode.list questionDecoder
+
+
+questionDecoder : Json.Decode.Decoder Questions
+questionDecoder =
+    Json.Decode.Pipeline.decode Questions
+        |> Json.Decode.Pipeline.required "Question" Json.Decode.string
+        |> Json.Decode.Pipeline.required "Criteria" Json.Decode.string
+        |> Json.Decode.Pipeline.required "Choices" Json.Decode.string
+
+
+questionsRequest : Cmd Msg
+questionsRequest =
+    let
+        url =
+            "http://localhost:3000/questions"
+    in
+        Http.send ProcessQuestionRequest
+            (Http.get url questionListDecoder)
 
 
 model : Model
 model =
     { mdl = Material.model
     , index = 0
-    , questions = Questions.question
+    , questions = []
     , score = 0
     }
 
@@ -69,6 +105,7 @@ model =
 
 type Msg
     = Mdl (Material.Msg Msg)
+    | ProcessQuestionRequest (Result Http.Error (List Questions))
     | CheckAnswer String
 
 
@@ -84,13 +121,19 @@ update msg model =
                     | index = model.index + 1
                     , questions = List.drop 1 model.questions
                     , score =
-                        if answer == question.correctAnswer then
+                        if answer == "Si" then
                             model.score + 1
                         else
                             model.score
                 }
             , Cmd.none
             )
+
+        ProcessQuestionRequest (Ok questions) ->
+            { model | questions = questions } ! []
+
+        ProcessQuestionRequest (Err error) ->
+            Debug.crash "" error
 
         Mdl msg_ ->
             Material.update Mdl msg_ model
@@ -100,17 +143,16 @@ update msg model =
 -- view
 
 
-currentQuestion : Maybe Question -> Question
+currentQuestion : Maybe Questions -> Questions
 currentQuestion question =
     case question of
         Just question ->
             question
 
         Nothing ->
-            { id = 0
-            , question = ""
-            , choices = []
-            , correctAnswer = ""
+            { question = ""
+            , criteria = ""
+            , choices = ""
             }
 
 
@@ -150,9 +192,9 @@ viewBody model =
     in
         if question.question /= "" then
             div []
-                [ h1 [ class "title" ] [ text "Pregunta" ]
+                [ h1 [ class "title" ] [ text question.criteria ]
                 , div [ class "question" ] [ text question.question ]
-                , div [] (List.map answer question.choices)
+                  --, div [] (List.map answer question.choices)
                 ]
         else
             div []
