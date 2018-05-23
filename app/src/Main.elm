@@ -6,20 +6,12 @@ import Html.Attributes exposing (..)
 import Html.Attributes as Html
 import Http
 import Http exposing (get, Error, Response, Error(..))
-
-
---import Questions exposing (..)
-
 import Material
 import Material.Scheme
-import Material.Button as Button
 import Material.Options as Options exposing (css)
 import Material.Layout as Layout
 import Material.Color as Color
-import Material.List as Lists
-import Material.Icon as Icon
 import Material.Typography as Typo
-import Material.Badge as Badge
 import Json.Decode exposing (int, string, float, nullable, Decoder)
 import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded)
 
@@ -28,7 +20,7 @@ main : Program Never Model Msg
 main =
     Html.program
         { view = view
-        , init = init
+        , init = ( initialModel, questionsRequest )
         , update = update
         , subscriptions = \_ -> Sub.none
         }
@@ -45,7 +37,6 @@ type alias Mdl =
 type alias Questions =
     { question : String
     , criteria : String
-    , choices : String
     }
 
 
@@ -57,14 +48,13 @@ type alias Model =
     }
 
 
-init : ( Model, Cmd Msg )
-init =
+initialModel : Model
+initialModel =
     { index = 0
+    , questions = []
     , score = 0
     , mdl = Material.model
-    , questions = []
     }
-        ! [ questionsRequest ]
 
 
 questionListDecoder : Json.Decode.Decoder (List Questions)
@@ -75,9 +65,8 @@ questionListDecoder =
 questionDecoder : Json.Decode.Decoder Questions
 questionDecoder =
     Json.Decode.Pipeline.decode Questions
-        |> Json.Decode.Pipeline.required "Question" Json.Decode.string
-        |> Json.Decode.Pipeline.required "Criteria" Json.Decode.string
-        |> Json.Decode.Pipeline.required "Choices" Json.Decode.string
+        |> Json.Decode.Pipeline.required "question" Json.Decode.string
+        |> Json.Decode.Pipeline.required "criteria" Json.Decode.string
 
 
 questionsRequest : Cmd Msg
@@ -88,15 +77,6 @@ questionsRequest =
     in
         Http.send ProcessQuestionRequest
             (Http.get url questionListDecoder)
-
-
-model : Model
-model =
-    { mdl = Material.model
-    , index = 0
-    , questions = []
-    , score = 0
-    }
 
 
 
@@ -140,25 +120,7 @@ update msg model =
 
 
 
--- view
-
-
-currentQuestion : Maybe Questions -> Questions
-currentQuestion question =
-    case question of
-        Just question ->
-            question
-
-        Nothing ->
-            { question = ""
-            , criteria = ""
-            , choices = ""
-            }
-
-
-answer : String -> Html Msg
-answer answer =
-    button [ onClick (CheckAnswer answer) ] [ text answer ]
+--view
 
 
 view : Model -> Html Msg
@@ -192,12 +154,29 @@ viewBody model =
     in
         if question.question /= "" then
             div []
-                [ h1 [ class "title" ] [ text question.criteria ]
+                [ h1 [ class "title" ] [ text "Pregunta" ]
                 , div [ class "question" ] [ text question.question ]
-                  --, div [] (List.map answer question.choices)
+                , div [] (List.map answer [ "Si", "No" ])
                 ]
         else
             div []
                 [ h1 [ class "title" ] [ text "Metodología recomendada" ]
-                , h3 [ class "title score" ] [ text ("Tu resultado " ++ (toString model.score) ++ " respuestas") ]
+                , h3 [ class "title score" ] [ text ("Respuestas positivas " ++ (toString model.score)) ]
                 ]
+
+
+currentQuestion : Maybe Questions -> Questions
+currentQuestion question =
+    case question of
+        Just question ->
+            question
+
+        Nothing ->
+            { question = ""
+            , criteria = ""
+            }
+
+
+answer : String -> Html Msg
+answer answer =
+    button [ onClick (CheckAnswer answer) ] [ text answer ]
