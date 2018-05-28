@@ -1,0 +1,36 @@
+#!/usr/bin/env sh
+
+command -v golint >/dev/null 2>&1 || {
+    echo >&2 "I require golint but it's not installed.  Aborting.";
+    echo >&2 "  See: https://github.com/golang/lint";
+    exit 1;
+}
+
+# Tools like gofmt have no support for ignoring directories (what a shame!)
+GO_FILES=$(find $(pwd) -type f -name "*.go" -not -path "*/vendor/*")
+GO_PACKAGES=$(go list ./... | grep -v /vendor/)
+
+GOFMT_FILES=$(gofmt -l $GO_FILES)
+if [ -n "${GOFMT_FILES}" ]; then
+  printf >&2 'gofmt failed for the following files:\n%s\n\nplease run "gofmt -w ." on your changes before committing.\n' "${GOFMT_FILES}"
+  exit 1
+fi
+
+GOLINT_ERRORS=$(golint $GO_PACKAGES)
+if [ -n "${GOLINT_ERRORS}" ]; then
+  printf >&2 'golint failed for the following reasons:\n%s\n\nplease run 'golint ./...' on your changes before committing.\n' "${GOLINT_ERRORS}"
+  exit 1
+fi
+
+GOVET_ERRORS=$(go vet $GO_PACKAGES 2>&1)
+if [ -n "${GOVET_ERRORS}" ]; then
+  printf >&2 'go vet failed for the following reasons:\n%s\n\nplease run "go tool vet *.go" on your changes before committing.\n' "${GOVET_ERRORS}"
+  exit 1
+fi
+
+go test $GO_PACKAGES -short -v | GREP_COLOR='01;36' egrep --color=auto 'PASS|ok'
+
+if [ $? -ne 0 ]; then
+  printf >&2 'go test failed, please fix before committing.\n'
+  exit 1
+fi
