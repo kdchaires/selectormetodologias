@@ -1,0 +1,33 @@
+sudo: false
+
+matrix:
+  include:
+    # Build configuration for the Go project (api directory)
+    - language: go
+      go: "1.10.x"
+      before_install:
+        - cd $TRAVIS_BUILD_DIR/api
+        - go get -v -u golang.org/x/lint/golint
+        - go get -v -u github.com/golang/dep/cmd/dep
+      before_script:
+        - dep ensure -v
+      script:
+        - ./linter
+        - go test -cpu=1,2 -v ./...
+
+    # Build configuration for the Elm project (app directory)
+    - language: node_js
+      node_js:
+        - "node"
+        - "lts/*"
+      before_install:
+        - cd $TRAVIS_BUILD_DIR/app
+      install:
+        - npm install -g elm elm-test elm-format create-elm-app
+      before_sript:
+        - elm app package install -y
+      script:
+        - elm app make --yes --warn
+        - elm format --yes --validate src/
+        - elm app test
+        - elm app build
