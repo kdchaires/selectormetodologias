@@ -1,29 +1,41 @@
 @import url(https://fonts.googleapis.com/css?family=Righteous);
-
+html,
 body {
-  background-color: #eeeeee;
-  text-align: center;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    line-height: 1.4em;
+    min-width: 230px;
+    max-width: 550px;
+    margin: 0 auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+    font-smoothing: antialiased;
+    font-weight: 300;
+    text-align: center;
 }
 
 .title {
   margin-top: 0px;
   margin-bottom: 50px;
   font-family: 'Righteous', serif;
-  font-size: 10rem;
+  font-size: 8rem;
   letter-spacing: 0.15rem;
   text-transform: uppercase;
-  color: #fff;
+  color: #c9c9c9;
 }
 
 .question {
-  font-family: monospace;
   font-size: 2rem;
 }
 
 button {
     margin-top: 2rem;
-    font-family: monospace;
+    font-family: 'Righteous', serif;
     font-size: 2rem;
+    color: #fff;
     display: inline-block;
     width: auto;
     font-size: 1.5em;
@@ -41,32 +53,28 @@ button {
     margin-left: 1rem;
 }
 
-@media screen and (max-width: 700px) {
+button:first-of-type {
+  border-color: #9ad3de;
+  background-color: #9ad3de;
+}
+
+button:nth-of-type(2) {
+  border-color: #89bdd3;
+  background-color: #89bdd3;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
   .title {
     font-size: 5rem;
   }
 }
 
-button:first-of-type {
-  border-color: #f06292;
-  background-color: #f8bbd0;
-}
-
-button:nth-of-type(2) {
-  border-color: #ef6c00;
-  background-color: #f9a825;
-}
-
-button:nth-of-type(3) {
-  border-color: #00bcd4;
-  background-color: #80deea;
-}
-
-button:nth-of-type(4) {
-    border-color: #5e35b1;
-    background-color: #b39ddb;
-}
 
 .score {
   font-size: 6rem;
+}
+@media (max-width: 430px) {
+    .question {
+        height: 50px;
+    }
+
 }
