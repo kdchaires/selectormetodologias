@@ -18,7 +18,7 @@ fi
 
 GOLINT_ERRORS=$(golint $GO_PACKAGES)
 if [ -n "${GOLINT_ERRORS}" ]; then
-  printf >&2 'golint failed for the following reasons:\n%s\n\nplease run 'golint ./...' on your changes before committing.\n' "${GOLINT_ERRORS}"
+  printf >&2 'golint failed for the following reasons:\n%s\n\nplease run "golint ./..." on your changes before committing.\n' "${GOLINT_ERRORS}"
   exit 1
 fi
 
@@ -31,6 +31,6 @@ fi
 go test $GO_PACKAGES -short -v | GREP_COLOR='01;36' egrep --color=auto 'PASS|ok'
 
 if [ $? -ne 0 ]; then
-  printf >&2 'go test failed, please fix before committing.\n'
+  printf >&2 'go test failed, please fix before committing by running "go test ./...".\n'
   exit 1
 fi
