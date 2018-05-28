@@ -16,9 +16,6 @@ Vagrant.configure("2") do |config|
     echo 'export GOPATH=/home/vagrant/go'             >> /etc/profile.d/gopath.sh
     echo 'export PATH=$PATH:$GOROOT/bin:$GOPATH/bin' >> /etc/profile.d/gopath.sh
   SHELL
-  
-<<<<<<< HEAD
+
 end
-=======
-end
->>>>>>> cc3c5b6c8b79c7ba2ff82481ade5a18c3a1d239d
+
