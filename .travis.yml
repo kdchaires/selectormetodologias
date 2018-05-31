@@ -43,7 +43,5 @@ matrix:
       before_sript:
         - elm app package install -y
       script:
-        - elm app make --yes --warn
         - elm format --yes --validate src/
         - elm app test
-        - elm app build
