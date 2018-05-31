@@ -20,10 +20,26 @@ matrix:
       node_js:
         - "node"
         - "lts/*"
+      cache:
+        directories:
+          - app/tests/elm-stuff/build-artifacts
+          - sysconfcpus
       before_install:
         - cd $TRAVIS_BUILD_DIR/app
+        - | # epic build time improvement - see https://github.com/elm-lang/elm-compiler/issues/1473#issuecomment-245704142
+          if [ ! -d sysconfcpus/bin ];
+          then
+            git clone https://github.com/obmarg/libsysconfcpus.git;
+            cd libsysconfcpus;
+            ./configure --prefix=$TRAVIS_BUILD_DIR/sysconfcpus;
+            make && make install;
+            cd ..;
+          fi
       install:
         - npm install -g elm elm-test elm-format create-elm-app
+        - mv $(npm config get prefix)/bin/elm-make $(npm config get prefix)/bin/elm-make-old
+        - printf '%s\n\n' '#!/bin/bash' 'echo "Running elm-make with sysconfcpus -n 2"' '$TRAVIS_BUILD_DIR/sysconfcpus/bin/sysconfcpus -n 2 elm-make-old "$@"' > $(npm config get prefix)/bin/elm-make
+        - chmod +x $(npm config get prefix)/bin/elm-make
       before_sript:
         - elm app package install -y
       script:
