@@ -14,6 +14,7 @@ import (
 )
 
 func main() {
+	// TODO Centralize access to os env to allow defaults and ease maintenance
 	// Load settings file
 	err := godotenv.Load()
 	if err != nil {
@@ -32,10 +33,12 @@ func main() {
 
 	// Router initialization
 	var router = mux.NewRouter()
+	// TODO Would be better if handlers' name align to ActionResourceHandler
 	// TODO Move this to a routes file?
 	router.HandleFunc("/healthcheck", app.HealthCheckHandler).Methods("GET")
 	router.HandleFunc("/questions", app.QuestionsListHandler).Methods("GET")
 	router.HandleFunc("/suggest", app.SuggestHandler).Methods("POST")
+	router.HandleFunc("/feedback", app.FeedbackCreateHandler).Methods("POST")
 
 	headersOk := handlers.AllowedHeaders([]string{"Authorization"})
 	originsOk := handlers.AllowedOrigins([]string{"*"})
