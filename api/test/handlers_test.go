@@ -13,6 +13,7 @@ import (
 func TestHealthCheckHandler(t *testing.T) {
 	rresponse := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/healthcheck", nil)
+	req.Header.Set("Content-Type", "application/json")
 
 	app := &controllers.App{Database: &mockDB{}}
 	http.HandlerFunc(app.HealthCheckHandler).ServeHTTP(rresponse, req)
@@ -31,6 +32,7 @@ func TestHealthCheckHandler(t *testing.T) {
 func TestQuestionsListHandler(t *testing.T) {
 	rresponse := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/healthcheck", nil)
+	req.Header.Set("Content-Type", "application/json")
 
 	app := &controllers.App{Database: &mockDB{}}
 	http.HandlerFunc(app.QuestionsListHandler).ServeHTTP(rresponse, req)
@@ -55,6 +57,7 @@ func TestQuestionsListHandler(t *testing.T) {
 func TestSuggestHandler(t *testing.T) {
 	rresponse := httptest.NewRecorder()
 	req, _ := http.NewRequest("POST", "/suggest", nil)
+	req.Header.Set("Content-Type", "application/json")
 
 	app := &controllers.App{Database: &mockDB{}}
 	http.HandlerFunc(app.SuggestHandler).ServeHTTP(rresponse, req)
@@ -71,7 +74,7 @@ func TestSuggestHandler(t *testing.T) {
 	}
 
 	// Test response code
-	var expectedCode = 200
+	var expectedCode = http.StatusOK
 	var obtainedCode = rresponse.Code
 
 	if expectedCode != obtainedCode {
