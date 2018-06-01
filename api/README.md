@@ -96,9 +96,11 @@ Las variables que deben especificarse en el archivo de configuración son:
 
 - `APP_BIND_ADDRESS`: Dirección IP utilizada por el servidor de aplicación.
 - `APP_BIND_PORT`: Puerto TCP utilizado por el servidor de la aplicación.
+- `APP_ENV`: Permite informar a la aplicación sobre el tipo de ambiente: `testing`, `local` o `production`.
 - `MONGODB_HOST`: Dirección IP del manejador de base de datos MongoDB.
 - `MONGODB_PORT`: Puerto TPC del manejador de base de datos MongoDB.
 - `MONGODB_NAME`: Nombre de la base de datos de la aplicación en MongoDB.
+- `STRICT_EMAIL_VERIFICATION`: Si es `true` intentará ver que el email del usuario es real.
 
 
 ### Ejecución del proyecto
