@@ -12,6 +12,7 @@ import (
 // testing of handlers that access the database.
 type Datastore interface {
 	AllQuestions() []*Question
+	SaveFeedback(*Feedback) error
 }
 
 // DB wraps a reference to the database cursor. It is expected for this struct

@@ -33,6 +33,7 @@ func (db *DB) AllQuestions() []*Question {
 	c := db.C("questions")
 	err := c.Find(bson.M{}).All(&questions)
 
+	// TODO Handle the error better so the web service can return HTTP 500
 	if err != nil {
 		log.Fatal("Can't read database, check permissions or resource names")
 	}
