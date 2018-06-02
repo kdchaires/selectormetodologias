@@ -1,7 +1,5 @@
 # API REST Selector de Metodologías
 
-[![Build Status](https://travis-ci.org/kdchaires/selectormetodologias/api.svg?branch=master)](https://travis-ci.org/kdchaires/selectormetodologias/api)
-
 Este proyecto es una aplicación REST programada en el lenguaje Go. Lo ideal es
 que si se desea utilizar este proyecto se descargue en su lugar
 [`kdchaires/selectormetodologias`](https://github.com/kdchaires/selectormetodologias)
