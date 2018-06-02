@@ -25,13 +25,14 @@ func (app *App) QuestionsListHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(app.Database.AllQuestions())
 }
 
+// FeedbackCreateHandler generetes a server response as specified by
+// https://selectormetodologias1.docs.apiary.io/#reference/feedback/coleccion-de-feedback/enviar-feedback
 func (app *App) FeedbackCreateHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	// Getting JSON Data
 	decoder := json.NewDecoder(r.Body)
-	// TODO wont be clearer to use "var feedback models.Feedback"?
-	feedback := models.Feedback{}
+	var feedback models.Feedback
 
 	err := decoder.Decode(&feedback)
 	if err != nil {

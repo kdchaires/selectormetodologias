@@ -15,8 +15,8 @@ type Evaluation struct {
 }
 
 // Question is the struct corresponding to the /questions resource. Once data
-// has been read from the database is instantiated in this type so it can be
-// handled in Go code.
+// has been read from the database it's instantiated in this type so that it
+// can be handled in Go code.
 type Question struct {
 	ID          bson.ObjectId `json:"id" bson:"_id,omitempty"`
 	Question    string        `json:"question"`

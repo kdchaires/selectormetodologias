@@ -12,6 +12,9 @@ import (
 	"time"
 )
 
+// Feedback is the struct corresponding to the /feedback resource. Once data has
+// been read from the database it's instantiated in this type so that it can be
+// handled in Go code.
 type Feedback struct {
 	Email       string    `json:"email" bson:"_id"`
 	CreatedAt   time.Time `json:"created_at" bson:"created_at"`
@@ -20,6 +23,9 @@ type Feedback struct {
 	Description string    `json:"description"`
 }
 
+// SaveFeedback uses the existing database connection to insert a new document
+// in the "feedbacks" collection and returns an error if the provided 'feedback'
+// struct is not valid or if it couldn't save it.
 func (db *DB) SaveFeedback(feedback *Feedback) error {
 	// Data validation
 	feedback.CreatedAt = time.Now()
@@ -31,8 +37,6 @@ func (db *DB) SaveFeedback(feedback *Feedback) error {
 		return err
 	}
 	feedback.Email = email
-
-	// TODO What if email exists in database? should update entry?
 
 	// Save to database
 	c := db.C("feedbacks")
