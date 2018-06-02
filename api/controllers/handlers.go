@@ -47,6 +47,8 @@ func (app *App) FeedbackCreateHandler(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(err.Error())
 	}
 
+	w.Header().Set("Location", r.URL.Path+"/"+feedback.Email)
+	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(feedback)
 }
 
