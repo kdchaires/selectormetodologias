@@ -1,4 +1,4 @@
-# Guía de contribución al proyecto para desarrolladores
+# Guía de contribución al proyecto Go (backend) para desarrolladores
 
 ## ¿Cómo puedo contribuir al proyecto?
 
