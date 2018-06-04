@@ -9,6 +9,10 @@ type alias Question =
     }
 
 
+
+-- TODO Use this sample questions to populate the JSONs in tests/SampleResponses
+
+
 budgetAvailableQuestion : Question
 budgetAvailableQuestion =
     { id = 1
