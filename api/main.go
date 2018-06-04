@@ -23,6 +23,7 @@ func main() {
 	}
 
 	// Initialize database
+	// TODO When DB server is unavailable print message instead of hanging
 	database, err := models.NewDBConnection(os.Getenv("MONGODB_NAME"))
 	if err != nil {
 		log.Panic(err)
@@ -40,7 +41,7 @@ func main() {
 	router.HandleFunc("/suggest", app.SuggestHandler).Methods("POST")
 	router.HandleFunc("/feedback", app.FeedbackCreateHandler).Methods("POST")
 
-	headersOk := handlers.AllowedHeaders([]string{"Authorization"})
+	headersOk := handlers.AllowedHeaders([]string{"Content-Type"})
 	originsOk := handlers.AllowedOrigins([]string{"*"})
 	methodsOk := handlers.AllowedMethods([]string{"GET", "POST", "OPTIONS"})
 	middlewareCORS := handlers.CORS(originsOk, headersOk, methodsOk)

@@ -26,8 +26,10 @@ func (app *App) FeedbackCreateHandler(w http.ResponseWriter, r *http.Request) {
 	// Save to database
 	err = app.Database.SaveFeedback(&feedback)
 	if err != nil {
+		// TODO If document with that key exists it shuld update instead (mgo.upsert)
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(err.Error())
+		return
 	}
 
 	w.Header().Set("Location", r.URL.Path+"/"+feedback.Email)
