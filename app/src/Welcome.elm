@@ -1,5 +1,9 @@
 module Main exposing (..)
 
+import Http
+import Json.Encode
+import Json.Decode
+import Json.Decode.Pipeline as Pipe
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Material
@@ -18,6 +22,18 @@ type alias Model =
     { index : Int
     , mdl : Material.Model
     , activePage : Int
+    , feedback : Feedback
+    }
+
+
+type alias Feedback =
+    { email : String
+    , institution : String
+
+    -- TODO Make createdAt a Date rather than a String
+    , createdAt : String
+    , finished : Bool
+    , description : String
     }
 
 
@@ -26,6 +42,7 @@ initialModel =
     { index = 0
     , mdl = Material.model
     , activePage = 0
+    , feedback = Feedback "" "" "" False ""
     }
 
 
@@ -33,6 +50,37 @@ type Msg
     = Mdl (Material.Msg Msg)
     | SetUserInstitute String
     | SetUserEmail String
+    | CreateFeedback
+      -- TODO Organize these Msg separately like Mdl does?
+    | HandlePostFeedbackResponse (Result Http.Error Feedback)
+
+
+feedbackDecoder : Json.Decode.Decoder Feedback
+feedbackDecoder =
+    Pipe.decode Feedback
+        |> Pipe.required "email" Json.Decode.string
+        |> Pipe.required "institution" Json.Decode.string
+        |> Pipe.required "created_at" Json.Decode.string
+        |> Pipe.required "finished" Json.Decode.bool
+        |> Pipe.required "description" Json.Decode.string
+
+
+postFeedback : Feedback -> Cmd Msg
+postFeedback feedback =
+    let
+        url =
+            "http://localhost:8000/feedback"
+
+        -- TODO Define Encoders and Decoders for custom types in its own module
+        feedbackBody : Json.Encode.Value
+        feedbackBody =
+            Json.Encode.object <|
+                [ ( "email", Json.Encode.string feedback.email )
+                , ( "institution", Json.Encode.string feedback.institution )
+                ]
+    in
+        Http.send HandlePostFeedbackResponse <|
+            Http.post url (Http.jsonBody feedbackBody) feedbackDecoder
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -41,11 +89,42 @@ update msg model =
         Mdl msg_ ->
             Material.update Mdl msg_ model
 
-        SetUserInstitute _ ->
-            ( model, Cmd.none )
+        SetUserInstitute institute ->
+            let
+                feedback =
+                    model.feedback
 
-        SetUserEmail _ ->
-            ( model, Cmd.none )
+                newFeedback =
+                    { feedback | institution = institute }
+            in
+                { model | feedback = newFeedback } ! []
+
+        SetUserEmail email ->
+            let
+                feedback =
+                    model.feedback
+
+                newFeedback =
+                    { feedback | email = email }
+            in
+                { model | feedback = newFeedback } ! []
+
+        CreateFeedback ->
+            ( model
+            , postFeedback model.feedback
+            )
+
+        HandlePostFeedbackResponse result ->
+            case result of
+                Ok savedFeedback ->
+                    { model | feedback = savedFeedback } ! []
+
+                Err err ->
+                    let
+                        _ =
+                            Debug.log "Couldn't post feedback!" err
+                    in
+                        ( model, Cmd.none )
 
 
 view : Model -> Html Msg
@@ -99,8 +178,7 @@ viewWelcome model =
             [ 0 ]
             model.mdl
             [ Button.colored
-
-            -- , Options.onClick (ReadEntry idx)
+            , Options.onClick CreateFeedback
             ]
             [ text "Comenzar cuestionario" ]
         ]
