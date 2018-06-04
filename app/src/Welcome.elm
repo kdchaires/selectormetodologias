@@ -65,22 +65,26 @@ feedbackDecoder =
         |> Pipe.required "description" Json.Decode.string
 
 
+
+-- TODO Define Encoders and Decoders for custom types in its own module
+
+
+feedbackEncoder : Feedback -> Json.Encode.Value
+feedbackEncoder feedback =
+    Json.Encode.object <|
+        [ ( "email", Json.Encode.string feedback.email )
+        , ( "institution", Json.Encode.string feedback.institution )
+        ]
+
+
 postFeedback : Feedback -> Cmd Msg
 postFeedback feedback =
     let
         url =
             "http://localhost:8000/feedback"
-
-        -- TODO Define Encoders and Decoders for custom types in its own module
-        feedbackBody : Json.Encode.Value
-        feedbackBody =
-            Json.Encode.object <|
-                [ ( "email", Json.Encode.string feedback.email )
-                , ( "institution", Json.Encode.string feedback.institution )
-                ]
     in
         Http.send HandlePostFeedbackResponse <|
-            Http.post url (Http.jsonBody feedbackBody) feedbackDecoder
+            Http.post url (Http.jsonBody (feedbackEncoder feedback)) feedbackDecoder
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -141,7 +145,7 @@ view model =
             --     [ text "Bienvenido" ]
             -- ]
             , drawer = []
-            , tabs = ( [ text "Inicio", text "Metodologías" ], [] )
+            , tabs = ( [], [] )
             , main =
                 [ grid []
                     [ cell
