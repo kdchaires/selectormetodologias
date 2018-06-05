@@ -75,3 +75,32 @@ func (mdb *mockDB) AllQuestions() ([]*models.Question, error) {
 
 	return questions, nil
 }
+
+func (mdb *mockDB) AllMethodologies() ([]*models.SimplifiedMethodology, error) {
+	methodologies := []*models.SimplifiedMethodology{
+		&models.SimplifiedMethodology{
+			ID:   "0b160f960cbf7fb48ebbf4f8",
+			Name: "scrum",
+			Links: []*models.Hateoas{
+				&models.Hateoas{
+					Href: "methodologies/0b160f960cbf7fb48ebbf4f8",
+					Rel:  "self",
+					Type: "GET",
+				},
+			},
+		},
+		&models.SimplifiedMethodology{
+			ID:   "8f4fbbe84bf7fbc069f061b0",
+			Name: "xp",
+			Links: []*models.Hateoas{
+				&models.Hateoas{
+					Href: "methodologies/8f4fbbe84bf7fbc069f061b0",
+					Rel:  "self",
+					Type: "GET",
+				},
+			},
+		},
+	}
+
+	return methodologies, nil
+}

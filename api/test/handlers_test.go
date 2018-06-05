@@ -10,6 +10,8 @@ import (
 	"github.com/kdchaires/selectormetodologias/api/controllers"
 )
 
+// TODO Now that handlers are in different fiels, shouldn't tests be scattered as well?
+
 // Take this as a sample test
 func TestHealthCheckHandler(t *testing.T) {
 	rresponse := httptest.NewRecorder()
