@@ -37,9 +37,18 @@
   revision = "a79fa1e548e2c689c241d10173efd51e5d689d5b"
   version = "v1.2.0"
 
+[[projects]]
+  branch = "master"
+  name = "github.com/kdchaires/selectormetodologias"
+  packages = [
+    "api/controllers",
+    "api/models"
+  ]
+  revision = "dbdf6c7399c8ecc6738464eac86a4f3ff71d0426"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "4908d3862125e25cdc76460c963126860369d385ac86131e164b4dea7e0adf0c"
+  inputs-digest = "872635bc14843837dcf11ba35da41658aae8434c05cbfff7ca642b3551ba0404"
   solver-name = "gps-cdcl"
   solver-version = 1
