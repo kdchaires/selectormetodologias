@@ -17,14 +17,31 @@ import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded)
 import Html.Lazy exposing (lazy, lazy2)
 
 
-main : Program Never Model Msg
+main : Program Config Model Msg
 main =
-    Html.program
+    Html.programWithFlags
         { view = view
-        , init = ( initialModel, questionsRequest )
+        , init = init
         , update = update
-        , subscriptions = \_ -> Sub.none
+        , subscriptions = always Sub.none
         }
+
+
+init : Config -> ( Model, Cmd Msg )
+init config =
+    ( initialModel config, questionsRequest config )
+
+
+initialModel : Config -> Model
+initialModel config =
+    { index = 0
+    , questions = []
+    , answers = []
+    , score = 0
+    , mdl = Material.model
+    , errorMessage = Nothing
+    , config = config
+    }
 
 
 
@@ -45,11 +62,11 @@ questionDecoder =
         |> Json.Decode.Pipeline.required "criteria" Json.Decode.string
 
 
-questionsRequest : Cmd Msg
-questionsRequest =
+questionsRequest : Config -> Cmd Msg
+questionsRequest config =
     let
         url =
-            "http://localhost:8000/questions"
+            config.api_url ++ "/questions"
     in
         Http.send ProcessQuestionRequest
             (Http.get url questionListDecoder)
@@ -67,6 +84,7 @@ type alias Model =
     , score : Int
     , mdl : Material.Model
     , errorMessage : Maybe String
+    , config : Config
     }
 
 
@@ -87,21 +105,15 @@ type alias Mdl =
     Material.Model
 
 
+type alias Config =
+    { api_url : String
+    }
+
+
 newAnswer : String -> Int -> Evaluation
 newAnswer idQuestion value =
     { idQuestion = idQuestion
     , value = value
-    }
-
-
-initialModel : Model
-initialModel =
-    { index = 0
-    , questions = []
-    , answers = []
-    , score = 0
-    , mdl = Material.model
-    , errorMessage = Nothing
     }
 
 
