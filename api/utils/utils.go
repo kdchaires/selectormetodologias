@@ -32,7 +32,6 @@ func LogRequest(request *http.Request) {
 // that it may have and check it is a valid formated address. If the enviroment
 // variable STRICT_EMAIL_VERIFICATION is set to true then it will also validate
 // that the given address exists.
-// TODO This function seems to long, it couldn't be shorter/clearer?
 func CleanAndValidateEmail(address string) (string, error) {
 	email := strings.TrimSpace(address)   // Trim extra spaces
 	email = strings.TrimRight(email, ".") // Trim extra dot in hostname.

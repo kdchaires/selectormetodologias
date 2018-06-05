@@ -11,7 +11,7 @@ import (
 // wanting to be used as database access layer. It's defined because simplifies
 // testing of handlers that access the database.
 type Datastore interface {
-	AllQuestions() []*Question
+	AllQuestions() ([]*Question, error)
 	SaveFeedback(*Feedback) error
 }
 

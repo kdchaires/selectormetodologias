@@ -39,7 +39,8 @@ func TestQuestionsListHandler(t *testing.T) {
 	http.HandlerFunc(app.QuestionsListHandler).ServeHTTP(rresponse, req)
 
 	// TODO Extract marshaling to a helper
-	contents, err := json.Marshal(app.Database.AllQuestions())
+	questions, _ := app.Database.AllQuestions()
+	contents, err := json.Marshal(questions)
 	if err != nil {
 		t.Fatal("While marshaling sample data: " + err.Error())
 	}

@@ -1,7 +1,7 @@
 package models
 
 import (
-	"log"
+	"errors"
 	"reflect"
 
 	"github.com/globalsign/mgo/bson"
@@ -27,15 +27,15 @@ type Question struct {
 // AllQuestions uses the existing database connection to read all documents from
 // the "questions" collection and returns them as an array of pointers to
 // Question instances.
-func (db *DB) AllQuestions() []*Question {
+func (db *DB) AllQuestions() ([]*Question, error) {
 	var questions []Question
 
 	c := db.C("questions")
 	err := c.Find(bson.M{}).All(&questions)
 
-	// TODO Handle the error better so the web service can return HTTP 500
 	if err != nil {
-		log.Fatal("Can't read database, check permissions or resource names")
+		return nil, errors.New(
+			"Can't read database, check permissions or resource names")
 	}
 
 	// TODO When used multiple-times move it to a utils/shared package
@@ -54,5 +54,5 @@ func (db *DB) AllQuestions() []*Question {
 		return out.Interface()
 	}
 
-	return pointersOf(questions).([]*Question)
+	return pointersOf(questions).([]*Question), nil
 }

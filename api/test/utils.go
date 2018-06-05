@@ -45,7 +45,7 @@ func (mdb *mockDB) SaveFeedback(f *models.Feedback) error {
 	return nil
 }
 
-func (mdb *mockDB) AllQuestions() []*models.Question {
+func (mdb *mockDB) AllQuestions() ([]*models.Question, error) {
 	evaluations := []models.Evaluation{
 		models.Evaluation{Methodology: 1, Evaluation: 3},
 		models.Evaluation{Methodology: 2, Evaluation: 1},
@@ -73,5 +73,5 @@ func (mdb *mockDB) AllQuestions() []*models.Question {
 		},
 	}
 
-	return questions
+	return questions, nil
 }
