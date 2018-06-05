@@ -1,6 +1,7 @@
 package models
 
 import (
+	"log"
 	"strings"
 	"time"
 
@@ -33,7 +34,15 @@ func (db *DB) SaveFeedback(feedback *Feedback) error {
 	}
 	feedback.Email = email
 
-	// Save to database
+	// If feedback with email exists then it will be updated rather than saved
 	c := db.C("feedbacks")
-	return c.Insert(feedback)
+	changeInfo, err := c.UpsertId(email, feedback)
+
+	if err == nil {
+		log.Printf(
+			"SaveFeedback | %s | Updated: %d | Removed: %d | Matched: %d\n",
+			email, changeInfo.Updated, changeInfo.Removed, changeInfo.Matched)
+	}
+
+	return err
 }
