@@ -1,6 +1,45 @@
-This project is bootstrapped with [Create Elm App](https://github.com/halfzebra/create-elm-app).
 
-Below you will find some information on how to perform basic tasks.  
+# ELM SPA Selector de Metodologías
+
+Este proyecto es una aplicación SPA (Single Page Application) programada en el
+lenguaje Elm. Esta aplicación consume un servicio en el backend (un API REST) el
+cual ha sido desarrollada con Go.
+
+Si usted es un desarrollador, por favor adicionalmente consulte
+[CONTRIBUTING.md](/CONTRIBUTING.md) para más información técnica sobre el
+proyecto.
+
+A continuación se detallan los pasos necesarios para instalar y ejecutar esta
+aplicación en un ambiente de pre-producción.
+
+
+## Instalación de dependencias
+
+La estructura del proyecto ha sido generada con
+[Create Elm App](https://github.com/halfzebra/create-elm-app). Por favor
+refiérase a su documentación para obtener información de como instalarlo.
+
+Una vez instalada la herramienta `create-elm-app` puede utilizar el siguiente
+comando para instalar las dependencias del proyecto:
+
+```sh
+$ elm app package install
+```
+
+Se le preguntará si desea instalar las dependencias a lo cual necesita contestar
+afirmativamente (`Y/y`).
+
+
+## Compilación de Elm a JS y CSS
+
+Con la herramienta `create-elm-app` puede utilizar el siguiente comando para
+compilar el código Elm a código JavaScript que puede utilizar en el HTML.
+
+```sh
+$ elm app build
+```
+
+Below you will find some information on how to perform basic tasks.
 You can find the most recent version of this guide [here](https://github.com/halfzebra/create-elm-app/blob/master/template/README.md).
 
 ## Table of Contents
@@ -83,16 +122,16 @@ You may create subdirectories inside src.
 ## Available scripts
 In the project directory you can run:
 ### `elm-app build`
-Builds the app for production to the `build` folder.  
+Builds the app for production to the `build` folder.
 
-The build is minified, and the filenames include the hashes.  
+The build is minified, and the filenames include the hashes.
 Your app is ready to be deployed!
 
 ### `elm-app start`
-Runs the app in the development mode.  
+Runs the app in the development mode.
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.  
+The page will reload if you make edits.
 You will also see any lint errors in the console.
 
 ### `elm-app test`
@@ -209,7 +248,7 @@ In Elm code, you can use `%PUBLIC_URL%` for similar purposes:
 
 ```elm
 // Note: this is an escape hatch and should be used sparingly!
-// Normally we recommend using `import`  and `Html.programWithFlags` for getting 
+// Normally we recommend using `import`  and `Html.programWithFlags` for getting
 // asset URLs as described in “Adding Images and Fonts” above this section.
 img [ src "%PUBLIC_PATH%/logo.svg" ] []
 ```
@@ -251,7 +290,7 @@ To forward the API ( REST ) calls to backend server, add a proxy to the `elm-pac
 ```
 
 Make sure the XHR requests set the `Content-type: application/json` and `Accept: application/json`.
-The development server has heuristics, to handle it's own flow, which may interfere with proxying of 
+The development server has heuristics, to handle it's own flow, which may interfere with proxying of
 other html and javascript content types.
 
 ```sh
