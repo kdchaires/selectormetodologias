@@ -40,6 +40,7 @@ func main() {
 	router.HandleFunc("/questions", app.QuestionsListHandler).Methods("GET")
 	router.HandleFunc("/suggest", app.SuggestHandler).Methods("POST")
 	router.HandleFunc("/feedback", app.FeedbackCreateHandler).Methods("POST")
+	router.HandleFunc("/methodologies/{methodology_id}", app.MethodologyHandler).Methods("GET")
 
 	headersOk := handlers.AllowedHeaders([]string{"Content-Type"})
 	originsOk := handlers.AllowedOrigins([]string{"*"})

@@ -13,6 +13,8 @@ import (
 type Datastore interface {
 	AllQuestions() ([]*Question, error)
 	SaveFeedback(*Feedback) error
+	AllMethodologies() ([]*SimplifiedMethodology, error)
+	Methodology(id string) ([]Methodology, error)
 }
 
 // DB wraps a reference to the database cursor. It is expected for this struct
