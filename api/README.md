@@ -1,12 +1,6 @@
 # API REST Selector de Metodologías
 
-[![Build Status](https://travis-ci.org/kdchaires/selectormetodologias/api.svg?branch=master)](https://travis-ci.org/kdchaires/selectormetodologias/api)
-
-Este proyecto es una aplicación REST programada en el lenguaje Go. Lo ideal es
-que si se desea utilizar este proyecto se descargue en su lugar
-[`kdchaires/selectormetodologias`](https://github.com/kdchaires/selectormetodologias)
-y se instale desde allí, dicho proyecto ya incluye éste sistema y además
-contiene la aplicación cliente (Elm) que consume este servicio.
+Este proyecto es una aplicación REST programada en el lenguaje Go.
 
 Si usted es un desarrollador, por favor adicionalmente consulte
 [CONTRIBUTING.md](/CONTRIBUTING.md) para más información técnica sobre el
@@ -96,9 +90,11 @@ Las variables que deben especificarse en el archivo de configuración son:
 
 - `APP_BIND_ADDRESS`: Dirección IP utilizada por el servidor de aplicación.
 - `APP_BIND_PORT`: Puerto TCP utilizado por el servidor de la aplicación.
+- `APP_ENV`: Permite informar a la aplicación sobre el tipo de ambiente: `testing`, `local` o `production`.
 - `MONGODB_HOST`: Dirección IP del manejador de base de datos MongoDB.
 - `MONGODB_PORT`: Puerto TPC del manejador de base de datos MongoDB.
 - `MONGODB_NAME`: Nombre de la base de datos de la aplicación en MongoDB.
+- `STRICT_EMAIL_VERIFICATION`: Si es `true` intentará ver que el email del usuario es real.
 
 
 ### Ejecución del proyecto

@@ -1,10 +1,51 @@
 package test
 
-import "github.com/kdchaires/selectormetodologias/api/models"
+import (
+	"bytes"
+	"encoding/json"
+	"io/ioutil"
+	"path/filepath"
+	"testing"
+	"time"
+
+	"github.com/kdchaires/selectormetodologias/api/models"
+)
 
 type mockDB struct{}
 
-func (mdb *mockDB) AllQuestions() []*models.Question {
+func loadFixture(t *testing.T, name string) string {
+	path := filepath.Join("testdata", name) // relative path
+
+	bs, err := ioutil.ReadFile(path)
+	if err != nil {
+		t.Fatalf("While loading \"%s\" fixture: %s", name, err.Error())
+	}
+
+	// Removes new lines and extra spaces from json fixture
+	var bcontents bytes.Buffer
+	err = json.Compact(&bcontents, bs)
+	if err != nil {
+		t.Fatalf("While pruning \"%s\" fixture: %s", name, err.Error())
+	}
+
+	return bcontents.String() + "\n" // Responses have \n appendend
+}
+
+func (mdb *mockDB) SaveFeedback(f *models.Feedback) error {
+	// Set a fake "created_at" date
+	str := "2018-06-01T13:04:27.688581055-05:00"
+	t, err := time.Parse(time.RFC3339, str)
+
+	if err != nil {
+		return err
+	}
+
+	f.CreatedAt = t
+
+	return nil
+}
+
+func (mdb *mockDB) AllQuestions() ([]*models.Question, error) {
 	evaluations := []models.Evaluation{
 		models.Evaluation{Methodology: 1, Evaluation: 3},
 		models.Evaluation{Methodology: 2, Evaluation: 1},
@@ -32,5 +73,5 @@ func (mdb *mockDB) AllQuestions() []*models.Question {
 		},
 	}
 
-	return questions
+	return questions, nil
 }

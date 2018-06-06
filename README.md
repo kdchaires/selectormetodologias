@@ -1,5 +1,8 @@
 ﻿# Selector de Metodologías
-Selector de Meetodologías es una aplicación que ayuda a todos aquellos desarrolladores, experimentados o no, a evaluar sus proyectos y recomendarles diferentes metodologías de desarrollo que se adecuen a sus necesidades y posibilidades.
+
+[![Build Status](https://travis-ci.org/kdchaires/selectormetodologias.svg?branch=master)](https://travis-ci.org/kdchaires/selectormetodologias)
+
+Selector de Metodologías es una aplicación que ayuda a todos aquellos desarrolladores, experimentados o no, a evaluar sus proyectos y recomendarles diferentes metodologías de desarrollo que se adecuen a sus necesidades y posibilidades.
 
 # Tabla de contenido
  - Instalación
@@ -19,7 +22,7 @@ selectormetodologias/
 
 ## Requerimientos del servidor
 
-La instalación de este proyecto requiere algunos requerimientos de sistema. Para probar de manera rápida y facil puedes utilizar nuestra [Caja de Vagrant](http://handlebarsjs.com/) la cual ya cumple con todos los requerimientos de sistema necesarios. 
+La instalación de este proyecto requiere algunos requerimientos de sistema. Para probar de manera rápida y fácil puedes utilizar nuestra [Caja de Vagrant](http://handlebarsjs.com/) la cual ya cumple con todos los requerimientos de sistema necesarios.
 
 Si decides utilizar un servidor propio debes estar seguro de cumplir con los siguientes requerimientos.
 - Elm v0.18.0
@@ -32,13 +35,13 @@ Para utilizar nuestra **Caja de Vagrant** es necesario tener instaladas las sigu
 - Vagrant v2.x.x
 - VirtualBox v5.2.x
 
-Sigue las [instrucciones de instalación de Vagrant](https://www.vagrantup.com/intro/getting-started/install.html) y las [instrucciones de instalación de VirtualBox](https://www.virtualbox.org/wiki/Downloads) oficiales para su correcta instalación. 
+Sigue las [instrucciones de instalación de Vagrant](https://www.vagrantup.com/intro/getting-started/install.html) y las [instrucciones de instalación de VirtualBox](https://www.virtualbox.org/wiki/Downloads) oficiales para su correcta instalación.
 
-Para descargar y ejecutar la caja solo es necesario entrar a la raiz del proyecto y ejecutar el siguiente comando:
+Para descargar y ejecutar la caja solo es necesario entrar a la raíz del proyecto y ejecutar el siguiente comando:
 ```sh
 $ vagrant up
 ```
-Una vez que se encuentre corriendo la caja se puede acceder a travez de ssh:
+Una vez que se encuentre corriendo la caja se puede acceder a través de SSH:
 ```sh
 $ vagrant ssh
 ```
@@ -52,6 +55,3 @@ $ cd /vagrant/app
 $ elm-app start
 ```
 Por ultimo, desde cualquier navegador ingresa a http://localhost:3000/ para abrir la aplicación.
-
-
-

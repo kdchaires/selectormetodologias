@@ -1,0 +1,29 @@
+#!/usr/bin/env sh
+
+command -v elm-format >/dev/null 2>&1 || {
+    echo >&2 "I require elm-format but it's not installed.  Aborting.";
+    echo >&2 "  See: https://github.com/avh4/elm-format";
+    exit 1;
+}
+
+command -v elm-test >/dev/null 2>&1 || {
+    echo >&2 "I require elm-test but it's not installed.  Aborting.";
+    echo >&2 "  See: https://github.com/elm-community/elm-test";
+    exit 1;
+}
+
+ELM_FILES=$(find $(pwd) -type f -name "*.elm" -not -path "*/elm-stuff/*")
+
+elm-format --validate $ELM_FILES
+
+if [ $? -ne 0 ]; then
+  printf >&2 'elm-format failed for the following files:\n%s\n\nplease run "elm-format src" on your changes before committing.\n' "${ELM_FORMAT}"
+  exit 1
+fi
+
+elm-test $(find $(pwd) -name "*Test*.elm" -type f -not -path "*/elm-stuff/*")
+
+if [ $? -ne 0 ]; then
+  printf >&2 'elm-test failed, please fix before committing by running "elm-test".\n'
+  exit 1
+fi

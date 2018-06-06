@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+./api/linter
+if [ $? -ne 0 ]; then
+  printf >&2 'linter for GO API failed, please fix before committing by running "./api/linter".\n'
+  exit 1
+fi
+
+./app/linter
+if [ $? -ne 0 ]; then
+  printf >&2 'linter for ELM APP failed, please fix before committing by running "./app/linter".\n'
+  exit 1
+fi
