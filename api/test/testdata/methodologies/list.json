@@ -1,0 +1,24 @@
+[
+  {
+    "id": "5b173119a4ce835e4dec2917",
+    "name": "Scrum",
+    "links": [
+      {
+        "href": "methodologies/5b173119a4ce835e4dec2917",
+        "rel": "self",
+        "type": "GET"
+      }
+    ]
+  },
+  {
+    "id": "5b173119a4ce835e4dec2918",
+    "name": "Xtreme Programming",
+    "links": [
+      {
+        "href": "methodologies/5b173119a4ce835e4dec2918",
+        "rel": "self",
+        "type": "GET"
+      }
+    ]
+  }
+]

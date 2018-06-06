@@ -180,3 +180,45 @@ func TestFeedbackCreateHandler(t *testing.T) {
 			obtainedBody)
 	}
 }
+
+func TestMethodologiesListHandler(t *testing.T) {
+	rresponse := httptest.NewRecorder()
+	req, _ := http.NewRequest("GET", "/methodologies", nil)
+	req.Header.Set("Content-Type", "application/json")
+
+	app := &controllers.App{Database: &mockDB{}}
+	http.HandlerFunc(app.MethodologiesListHandler).ServeHTTP(rresponse, req)
+
+	// Test response code
+	var expectedCode = http.StatusOK
+	var obtainedCode = rresponse.Code
+
+	if expectedCode != obtainedCode {
+		t.Errorf(
+			"\n...expectedCode = %#v\n...obtainedCode = %#v",
+			expectedCode,
+			obtainedCode)
+	}
+
+	// Test response headers
+	var expectedContentType = "application/json"
+	var obtainedContentType = rresponse.Header().Get("Content-Type")
+
+	if expectedContentType != obtainedContentType {
+		t.Errorf(
+			"\n...expectedContentType = %#v\n...obtainedContentType = %#v",
+			expectedContentType,
+			obtainedContentType)
+	}
+
+	// Test response body
+	var expectedBody = loadFixture(t, "methodologies/list.json")
+	var obtainedBody = rresponse.Body.String()
+
+	if expectedBody != obtainedBody {
+		t.Errorf(
+			"\n...expectedBody = %#v\n...obtainedBody = %#v",
+			expectedBody,
+			obtainedBody)
+	}
+}
