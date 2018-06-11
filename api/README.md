@@ -94,8 +94,32 @@ Las variables que deben especificarse en el archivo de configuración son:
 - `MONGODB_HOST`: Dirección IP del manejador de base de datos MongoDB.
 - `MONGODB_PORT`: Puerto TPC del manejador de base de datos MongoDB.
 - `MONGODB_NAME`: Nombre de la base de datos de la aplicación en MongoDB.
+- `MONGODB_USERNAME`: Nombre de usuario de la base de datos.
+- `MONGODB_PASSWORD`: Contraseña del usuario de base de datos.
+- `MONGODB_AUTH_ENABLED`: `true` si MongoDB tiene habilitada la autenticación,
+  `false` caso contrario. Es necesario que esta variable sea `true` si se
+  ejecuta la aplicación en ambiente de producción.
 - `STRICT_EMAIL_VERIFICATION`: Si es `true` intentará ver que el email del usuario es real.
 
+
+#### MongoDB y Autenticación de usuarios
+
+Por default MongoDB no tiene activado el sistema de autenticación, sin embargo
+para que la aplicación funcione correctamente en un ambiente de producción
+(`APP_ENV=production`) entonces será necesario habilitar la autenticación en el
+servidor de MongoDB.
+
+Refiérase a los siguientes enlaces para consultar documentación de cómo habilitar
+la autenticación en MongoDB:
+
+- [Enable Auth - MongoDB Documentation](https://docs.mongodb.com/manual/tutorial/enable-authentication/)
+- [How to setup user authentication in MongoDB](https://medium.com/@matteocontrini/how-to-setup-auth-in-mongodb-3-0-properly-86b60aeef7e8)
+
+Una vez que la autenticación esté configurada debe especificar la variable
+`MONGODB_AUTH_ENABLED=true` en el archivo de configuración (`.env`).
+
+**Nota**: Si se utiliza el entorno `local` o `testing` entonces no se requiere
+autenticación en el servidor de base de datos.
 
 ### Ejecución del proyecto
 
