@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/globalsign/mgo/bson"
 	"github.com/kdchaires/selectormetodologias/api/models"
 )
 
@@ -74,4 +75,21 @@ func (mdb *mockDB) AllQuestions() ([]*models.Question, error) {
 	}
 
 	return questions, nil
+}
+
+func (mdb *mockDB) AllMethodologies() ([]*models.SimplifiedMethodology, error) {
+	methodologies := []*models.SimplifiedMethodology{
+		&models.SimplifiedMethodology{
+			ID:    bson.ObjectIdHex("5b173119a4ce835e4dec2917"),
+			Name:  "Scrum",
+			Links: nil,
+		},
+		&models.SimplifiedMethodology{
+			ID:    bson.ObjectIdHex("5b173119a4ce835e4dec2918"),
+			Name:  "Xtreme Programming",
+			Links: nil,
+		},
+	}
+
+	return methodologies, nil
 }
