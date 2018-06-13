@@ -1,8 +1,11 @@
 package models
 
 import (
+	"errors"
+	"fmt"
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/globalsign/mgo"
 )
@@ -28,13 +31,35 @@ type DB struct {
 // required later on.
 // TODO Move to a more general file/package?
 func NewDBConnection(databaseName string) (*DB, error) {
-	// TODO Take into consideration user, password
-	//      See: https://godoc.org/github.com/globalsign/mgo#Dial
-	session, err := mgo.Dial(
-		os.Getenv("MONGODB_HOST") + ":" + os.Getenv("MONGODB_PORT"))
+	var dbName = os.Getenv("MONGODB_NAME")
+	var mongoURL = os.Getenv("MONGODB_HOST") + ":" + os.Getenv("MONGODB_PORT")
+
+	authEnabled, _ := strconv.ParseBool(os.Getenv("MONGODB_AUTH_ENABLED"))
+	if authEnabled {
+		dbUsername := os.Getenv("MONGODB_USERNAME")
+		dbPassword := os.Getenv("MONGODB_PASSWORD")
+
+		// When using authentication, the dial format is different
+		// See: https://godoc.org/github.com/globalsign/mgo#Dial
+		mongoURL = fmt.Sprintf(
+			"mongodb://%s:%s@%s/%s",
+			dbUsername,
+			dbPassword,
+			mongoURL,
+			dbName)
+	} else {
+		// If in production then we must not allow usage of unsecured database
+		if os.Getenv("APP_ENV") == "production" {
+			log.Println("*** Refusing to run in production without DB Authentication ***")
+			log.Println("See Go project's README.md for more information.")
+			return nil, errors.New("Should set MONGODB_AUTH_ENABLED=true in .env file")
+		}
+	}
+
+	session, err := mgo.Dial(mongoURL)
 
 	if err != nil {
-		log.Println("*** Unable to connect to the database ***")
+		log.Println("*** Unable to connect to the database server ***")
 		return nil, err
 	}
 
@@ -43,5 +68,5 @@ func NewDBConnection(databaseName string) (*DB, error) {
 		return nil, err
 	}
 
-	return &DB{session.DB(databaseName)}, nil
+	return &DB{session.DB(dbName)}, nil
 }
