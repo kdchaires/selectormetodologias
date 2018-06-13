@@ -26,12 +26,16 @@ type SimplifiedMethodology struct {
 	Links []*Hateoas    `json:"links"`
 }
 
+// MethodologyE Documentar
+// TODO Documentar
 type MethodologyE struct {
 	_ID  bson.ObjectId `json:"id" bson:"_id,omitempty"`
 	Name string        `json:"name"`
 	ID   string        `json:"id"`
 }
 
+// Methodology Documentar
+// TODO Documentar
 type Methodology map[string]interface{}
 
 // AllMethodologies uses the existing database connection to read all documents
@@ -69,9 +73,9 @@ func (db *DB) AllMethodologies() ([]*SimplifiedMethodology, error) {
 
 // Methodology uses the existing database connection to read a document
 // from the "methodologies" collection and returns the methodology data by id
-func (db *DB) Methodology(id string) ([]MethodologyE, error) {
+func (db *DB) Methodology(id string) ([]Methodology, error) {
 	fmt.Println(id)
-	var methodology []MethodologyE
+	var methodology []Methodology
 	c := db.C("methodologies")
 	//err := c.Find(bson.M{"id":bson.M{"$eq":id,},}).All(&methodology)
 	err := c.Find(bson.M{"id": 1}).One(&methodology)
