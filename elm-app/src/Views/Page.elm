@@ -62,7 +62,7 @@ viewSignIn page =
         linkTo =
             navbarLink page
     in
-        []
+        [ linkTo Route.ListMethodologies [ i [ class "ion-compose" ] [], text " List methodologies" ] ]
 
 
 viewFooter : Html msg
