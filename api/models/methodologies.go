@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"fmt"
 	"reflect"
 
 	"github.com/globalsign/mgo/bson"
@@ -24,6 +25,14 @@ type SimplifiedMethodology struct {
 	Name  string        `json:"name"`
 	Links []*Hateoas    `json:"links"`
 }
+
+type MethodologyE struct {
+	_ID  bson.ObjectId `json:"id" bson:"_id,omitempty"`
+	Name string        `json:"name"`
+	ID   string        `json:"id"`
+}
+
+type Methodology map[string]interface{}
 
 // AllMethodologies uses the existing database connection to read all documents
 // from the "methodologies" collection and returns them as an array of pointers
@@ -56,4 +65,20 @@ func (db *DB) AllMethodologies() ([]*SimplifiedMethodology, error) {
 	}
 
 	return pointersOf(methodologies).([]*SimplifiedMethodology), nil
+}
+
+// Methodology uses the existing database connection to read a document
+// from the "methodologies" collection and returns the methodology data by id
+func (db *DB) Methodology(id string) ([]MethodologyE, error) {
+	fmt.Println(id)
+	var methodology []MethodologyE
+	c := db.C("methodologies")
+	//err := c.Find(bson.M{"id":bson.M{"$eq":id,},}).All(&methodology)
+	err := c.Find(bson.M{"id": 1}).One(&methodology)
+	fmt.Println(err)
+	if err != nil {
+		return nil, errors.New(
+			"Can't read database, check permissions or resource names")
+	}
+	return methodology, nil
 }
