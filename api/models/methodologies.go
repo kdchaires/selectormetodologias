@@ -3,8 +3,9 @@ package models
 import (
 	"errors"
 	"reflect"
-	"github.com/globalsign/mgo/bson"
 	"strconv"
+
+	"github.com/globalsign/mgo/bson"
 )
 
 // Hateoas is a helper useful to create nested JSON object "links" while
@@ -28,77 +29,77 @@ type SimplifiedMethodology struct {
 // Methodology Documentar
 // TODO Documentar
 type Methodology struct {
-	_ID  				bson.ObjectId `json:"id" bson:"_id,omitempty"`
-	Id   				string        `json:"id"`
-	Name 				string        `json:"name"`
-	Abstract  	string  			`json:"abstract"`
-	Quality   	string   			`json:"quality_features"`
-	Info   			string      	`json:"info"`
-	Type   			string      	`json:"type"`
-	Model   		string     		`json:"model"`
-	Diagrams 		*Diagrams			`json:"diagrams"`
-	Description *Description	`json:"description"`
+	_ID         bson.ObjectId `json:"id" bson:"_id,omitempty"`
+	Id          string        `json:"id"`
+	Name        string        `json:"name"`
+	Abstract    string        `json:"abstract"`
+	Quality     string        `json:"quality_features"`
+	Info        string        `json:"info"`
+	Type        string        `json:"type"`
+	Model       string        `json:"model"`
+	Diagrams    *Diagrams     `json:"diagrams"`
+	Description *Description  `json:"description"`
 }
 
 // Diagrams Documentar
 // TODO Documentar
 type Diagrams struct {
-	Process			string	`json:"process"`
-	Roles 			string  `json:"roles"`
-	Artifacts   string  `json:"artifacts"`
-	Practices   string  `json:"practices"`
+	Process   string `json:"process"`
+	Roles     string `json:"roles"`
+	Artifacts string `json:"artifacts"`
+	Practices string `json:"practices"`
 }
 
 // Description Documentar
 // TODO Documentar
 type Description struct {
-	Process			[]*Process		`json:"process"`
-	Roles 			[]*Roles  		`json:"roles"`
-	Artifacts   []*Artifacts  `json:"artifacts"`
-	Practices   []*Practices  `json:"practices"`
-	Tips   			[]string  		`json:"tips"`
-	Tools   		[]*Tools  		`json:"tools"`
+	Process   []*Process   `json:"process"`
+	Roles     []*Roles     `json:"roles"`
+	Artifacts []*Artifacts `json:"artifacts"`
+	Practices []*Practices `json:"practices"`
+	Tips      []string     `json:"tips"`
+	Tools     []*Tools     `json:"tools"`
 }
 
 // Process Documentar
 // TODO Documentar
 type Process struct {
-	Stage					int			`json:"stage"`
-	Name 					string  `json:"name"`
-	Description   string  `json:"description"`
-	Image   			string  `json:"image"`
+	Stage       int    `json:"stage"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Image       string `json:"image"`
 }
 
 // Roles Documentar
 // TODO Documentar
 type Roles struct {
-	Name 					string  `json:"name"`
-	Description   string  `json:"description"`
-	Image   			string  `json:"image"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Image       string `json:"image"`
 }
 
 // Artifacts Documentar
 // TODO Documentar
 type Artifacts struct {
-	Name 					string  `json:"name"`
-	Description   string  `json:"description"`
-	Image   			string  `json:"image"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Image       string `json:"image"`
 }
 
 // Practices Documentar
 // TODO Documentar
 type Practices struct {
-	Name 					string  `json:"name"`
-	Description   string  `json:"description"`
-	Image   			string  `json:"image"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Image       string `json:"image"`
 }
 
 // Tools Documentar
 // TODO Documentar
 type Tools struct {
-	Name 					string  `json:"name"`
-	Description   string  `json:"description"`
-	Website   		string  `json:"website"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Website     string `json:"website"`
 }
 
 // AllMethodologies uses the existing database connection to read all documents
