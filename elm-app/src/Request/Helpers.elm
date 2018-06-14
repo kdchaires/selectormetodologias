@@ -8,4 +8,4 @@ apiUrl str =
 
 apiUrll : String -> String
 apiUrll str =
-    "http://192.168.10.11:8088" ++ str
+    "http://localhost:3000" ++ str

@@ -13,8 +13,10 @@ import Material.Layout as Layout
 import Material.Color as Color
 import Material.Typography as Typo
 import Html.Lazy exposing (lazy, lazy2)
+import Data.Questions as Questions exposing (encodeNewAnswers)
 import Data.Questions.Evaluation as Evaluation exposing (Evaluation)
 import Data.Questions.Question as Question exposing (Question)
+import Data.Suggest as Suggest exposing (suggestDecoder, Suggest)
 import Request.Questions
 import Task exposing (Task)
 import Util exposing ((=>), pair, viewIf)
@@ -29,8 +31,8 @@ import Views.Page as Page
 type alias Model =
     { errors : List String
     , index : Int
-    , score : String
     , errorMessage : Maybe String
+    , suggestion : Suggest
     , answers : List Evaluation
     , questions : List Question
     }
@@ -46,7 +48,7 @@ init =
         handleLoadError _ =
             pageLoadError Page.Other "Questions is currently unavailable."
     in
-        Task.map (Model [] 0 "" Nothing []) loadQuestions
+        Task.map (Model [] 0 Nothing Suggest.empty []) loadQuestions
             |> Task.mapError handleLoadError
 
 
@@ -86,7 +88,8 @@ viewBody model =
                 , h3 [ class "title" ] [ text "Respuestas" ]
                 , div [] (List.map viewKeyedAnswer model.answers)
                 , button [ onClick (Suggest model.answers) ] [ text "Sugerir metodología" ]
-                , h1 [] [ text (toString model.score) ]
+                , h1 [] [ text (toString model.suggestion.name) ]
+                , h2 [] [ text (toString model.suggestion.score) ]
                 ]
 
 
@@ -130,21 +133,17 @@ viewAnswer evaluations =
     li [] [ text (evaluations.idQuestion ++ "==" ++ (toString evaluations.value)) ]
 
 
-saveSuggestRequest : List Evaluation -> Http.Request String
+saveSuggestRequest : List Evaluation -> Http.Request Suggest
 saveSuggestRequest listEvaluation =
-    Http.request
-        { --body = encodeNewAnswers listEvaluation |> Http.jsonBody
-          body = Http.emptyBody
-        , expect = Http.expectString
-        , headers = []
-        , method = "POST"
-        , timeout =
-            Nothing
-        , url =
-            "http://192.168.10.11:8088/suggest"
-            --, url = "https://private-anon-7a05ca6d76-selectormetodologias1.apiary-mock.com/suggest"
-        , withCredentials = False
-        }
+    let
+        url =
+            "http://localhost:3000/suggest"
+
+        -- "http://192.168.10.11:8088/suggest"
+        --, url = "https://private-anon-7a05ca6d76-selectormetodologias1.apiary-mock.com/suggest"
+    in
+        -- Evaluation: idQuestion String | value Int
+        Http.post url (Http.jsonBody (encodeNewAnswers listEvaluation)) Suggest.suggestDecoder
 
 
 createdSuggestMsg : List Evaluation -> Cmd Msg
@@ -164,7 +163,7 @@ type Msg
     = DismissErrors
       --  | ProcessQuestionRequest (Result Http.Error ())
     | CheckAnswer String
-    | CreatedSuggestMsg (Result Http.Error String)
+    | CreatedSuggestMsg (Result Http.Error Suggest.Suggest)
     | Suggest (List Evaluation)
 
 
@@ -197,8 +196,8 @@ update msg model =
         Suggest respuestas ->
             ( model, createdSuggestMsg respuestas )
 
-        CreatedSuggestMsg (Ok a) ->
-            { model | score = a } ! []
+        CreatedSuggestMsg (Ok suggest) ->
+            { model | suggestion = suggest } ! []
 
         CreatedSuggestMsg (Err error) ->
             { model

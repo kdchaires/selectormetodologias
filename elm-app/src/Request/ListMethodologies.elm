@@ -52,7 +52,7 @@ getMethodologies : Http.Request (List SimplifiedMethodology)
 getMethodologies =
     let
         url =
-            "https://private-anon-7a05ca6d76-selectormetodologias1.apiary-mock.com/methodologies"
+            "https://localhost:3000/methodologies"
     in
         Http.get url methodologiesListDecoder
 

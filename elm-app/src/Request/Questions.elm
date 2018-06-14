@@ -8,7 +8,7 @@ import HttpBuilder exposing (RequestBuilder, withExpect, withQueryParams)
 import Json.Encode as Encode exposing (Value)
 import Json.Decode exposing (int, string, float, nullable, Decoder)
 import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded)
-import Request.Helpers exposing (apiUrl)
+import Request.Helpers exposing (apiUrl, apiUrll)
 import Util exposing ((=>))
 
 
@@ -28,7 +28,6 @@ questionDecoder =
 questionsRequest : Http.Request (List Question)
 questionsRequest =
     let
-        url =
-            "http://192.168.10.11:8088/questions"
+        url = apiUrll("/questions")
     in
         Http.get url questionListDecoder
