@@ -36,8 +36,8 @@ func (app *App) MethodologiesListHandler(w http.ResponseWriter, r *http.Request)
 	json.NewEncoder(w).Encode(methodologies)
 }
 
-//MethodologyHandler generates a server response as specified by
-//https://selectormetodologias1.docs.apiary.io/#reference/metodologias/metodologia/consultar-detalles-de-una-metodologia
+// MethodologyHandler generates a server response as specified by
+// https://selectormetodologias1.docs.apiary.io/#reference/metodologias/metodologia/consultar-detalles-de-una-metodologia
 func (app *App) MethodologyHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	w.Header().Set("Content-Type", "application/json")

@@ -93,3 +93,8 @@ func (mdb *mockDB) AllMethodologies() ([]*models.SimplifiedMethodology, error) {
 
 	return methodologies, nil
 }
+
+func (mdb *mockDB) EvaluatedMethodologies() ([]*models.EvaluatedMethodology, error) {
+	// TODO Return proper fake instances of EvaluatedMethodology for tests
+	return nil, nil
+}
