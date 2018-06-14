@@ -69,7 +69,7 @@ view model =
             , Layout.fixedTabs
             ]
             { header =
-                [ h3 [] [ text model.methodology.name ] ]
+                [ h2 [Html.Attributes.align "center"] [ text model.methodology.name ] ]
                 -- [ Options.styled p
                 --     [ Typo.display3 ]
                 --     [ text "Bienvenido" ]
@@ -132,13 +132,13 @@ viewAbstract : Model -> Html Msg
 viewAbstract model =
     grid []
         [ cell
-            [ Grid.size All 6, offset All 2 ]
+            [ Grid.size All 6, offset All 3 ]
             [ Options.div
                 [ Elevation.e6
                 , css "margin-bottom" "20px"
                 , css "padding" "20px"
                 ]
-                [ h3 [] [ text "Resumen" ]
+                [ h1 [Html.Attributes.align "center"] [ text "Resumen" ]
                 , textHtml model.methodology.abstract
                 ]
             ]
@@ -149,7 +149,7 @@ viewProcess : Model -> Html Msg
 viewProcess model =
     grid []
         [ cell
-            [ Grid.size All 8 ]
+            [ Grid.size All 6, offset All 3 ]
             [ Options.div
                 [ Elevation.e6
                 , css "margin-bottom" "20px"
@@ -172,6 +172,7 @@ processHtml t =
             [ h1
                 [ Json.Encode.string t.name
                     |> Html.Attributes.property "innerHTML"
+                  , Html.Attributes.align "center"
                 ]
                 []
             , span
@@ -180,7 +181,9 @@ processHtml t =
                 ]
                 []
             , img
-                [ src t.image ]
+                [ src t.image
+                , style [ ( "width", "100%" )]
+                ]
                 []
             ]
     in
@@ -191,7 +194,7 @@ viewRoles : Model -> Html Msg
 viewRoles model =
     grid []
         [ cell
-            [ Grid.size All 6, offset All 1 ]
+            [ Grid.size All 6, offset All 3 ]
             [ Options.div
                 [ Elevation.e6
                 , css "margin-bottom" "20px"
@@ -214,6 +217,7 @@ rolesHtml t =
             [ h1
                 [ Json.Encode.string t.name
                     |> Html.Attributes.property "innerHTML"
+                  , Html.Attributes.align "center"
                 ]
                 []
             , span
@@ -222,7 +226,9 @@ rolesHtml t =
                 ]
                 []
             , img
-                [ src t.image ]
+                [ src t.image
+                , style [ ( "width", "100%" )]
+                ]
                 []
             ]
     in
@@ -233,7 +239,7 @@ viewArtifacts : Model -> Html Msg
 viewArtifacts model =
     grid []
         [ cell
-            [ Grid.size All 6, offset All 1 ]
+            [ Grid.size All 6, offset All 3 ]
             [ Options.div
                 [ Elevation.e6
                 , css "margin-bottom" "20px"
@@ -256,6 +262,7 @@ artifactsHtml t =
             [ h1
                 [ Json.Encode.string t.name
                     |> Html.Attributes.property "innerHTML"
+                  , Html.Attributes.align "center"
                 ]
                 []
             , span
@@ -264,7 +271,9 @@ artifactsHtml t =
                 ]
                 []
             , img
-                [ src t.image ]
+                [ src t.image
+                , style [ ( "width", "100%" )]
+                ]
                 []
             ]
     in
@@ -275,7 +284,7 @@ viewPractices : Model -> Html Msg
 viewPractices model =
     grid []
         [ cell
-            [ Grid.size All 6, offset All 1 ]
+            [ Grid.size All 6, offset All 3 ]
             [ Options.div
                 [ Elevation.e6
                 , css "margin-bottom" "20px"
@@ -298,6 +307,7 @@ practicesHtml t =
             [ h1
                 [ Json.Encode.string t.name
                     |> Html.Attributes.property "innerHTML"
+                  , Html.Attributes.align "center"
                 ]
                 []
             , span
@@ -306,7 +316,9 @@ practicesHtml t =
                 ]
                 []
             , img
-                [ src t.image ]
+                [ src t.image
+                , style [ ( "width", "100%" )]
+                ]
                 []
             ]
     in
@@ -317,7 +329,7 @@ viewTools : Model -> Html Msg
 viewTools model =
     grid []
         [ cell
-            [ Grid.size All 6, offset All 1 ]
+            [ Grid.size All 6, offset All 3 ]
             [ Options.div
                 [ Elevation.e6
                 , css "margin-bottom" "20px"
@@ -340,6 +352,7 @@ toolsHtml t =
             [ h1
                 [ Json.Encode.string t.name
                     |> Html.Attributes.property "innerHTML"
+                  , Html.Attributes.align "center"
                 ]
                 []
             , span
