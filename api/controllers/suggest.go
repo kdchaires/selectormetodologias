@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/kdchaires/selectormetodologias/api/models"
 )
@@ -65,7 +66,7 @@ func (app *App) SuggestHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	link := &models.Hateoas{
-		Href: "methodologies/" + methodology.ID.Hex(),
+		Href: "methodologies/" + strconv.Itoa(methodology.Methodology),
 		Rel:  "self",
 		Type: "GET",
 	}
