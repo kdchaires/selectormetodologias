@@ -169,20 +169,21 @@ func (db *DB) AllMethodologies() ([]*SimplifiedMethodology, error) {
 
 // Methodology uses the existing database connection to read a document
 // from the "methodologies" collection and returns the methodology data by id.
-func (db *DB) Methodology(id string) ([]*Methodology, error) {
-	var methodology []*Methodology
+func (db *DB) Methodology(sid string) (*Methodology, error) {
+	var methodology Methodology
 	c := db.C("methodologies")
-	val, errn := strconv.Atoi(id)
-	if errn != nil {
-		return nil, errors.New(
-			"Unsupported value")
-	}
 
-	err := c.Find(bson.M{"id": val}).All(&methodology)
+	id, err := strconv.Atoi(sid)
 	if err != nil {
 		return nil, errors.New(
-			"Can't read database, check permissions or resource names")
+			"Invalid format for resource ID, see API spec document")
 	}
 
-	return methodology, nil
+	err = c.Find(bson.M{"id": id}).One(&methodology)
+	if err != nil {
+		return nil, errors.New(
+			"Can't read database, check permissions or resource name")
+	}
+
+	return &methodology, nil
 }
