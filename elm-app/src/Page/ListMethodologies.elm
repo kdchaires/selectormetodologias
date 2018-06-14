@@ -103,7 +103,7 @@ viewMethodology model methodology =
 type Msg
     = DismissErrors
     | Mdl (Material.Msg Msg)
-    | WantMethodologyDetails (Int)
+    | WantMethodologyDetails (String)
 
 
 
