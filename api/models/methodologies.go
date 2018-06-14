@@ -12,9 +12,9 @@ import (
 // /questions resource. When reading data from the "methodologies" collection is
 // instantiated in this type so that it can be handled from Go code.
 type SimplifiedMethodology struct {
-	ID    bson.ObjectId `json:"id" bson:"_id,omitempty"`
-	Name  string        `json:"name"`
-	Links []*Hateoas    `json:"links"`
+	ID    int        `json:"id" bson:"id,omitempty"`
+	Name  string     `json:"name"`
+	Links []*Hateoas `json:"links"`
 }
 
 // Methodology Documentar

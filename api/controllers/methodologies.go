@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 	"github.com/kdchaires/selectormetodologias/api/models"
@@ -24,7 +25,7 @@ func (app *App) MethodologiesListHandler(w http.ResponseWriter, r *http.Request)
 	// Loop retrieved methodologies to add "links" attribute to each of them
 	for _, methodology := range methodologies {
 		link := &models.Hateoas{
-			Href: "methodologies/" + methodology.ID.Hex(),
+			Href: "methodologies/" + strconv.Itoa(methodology.ID),
 			Rel:  "self",
 			Type: "GET",
 		}
