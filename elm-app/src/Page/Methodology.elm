@@ -2,18 +2,9 @@ module Page.Methodology exposing (Model, Msg, init, update, view)
 
 import Html exposing (..)
 import Html.Events exposing (..)
-import Html.Attributes exposing (..)
 import Html.Attributes as Html
 import Http
 import Http exposing (get, Error, Response, Error(..))
-import Material
-import Material
-import Material.Scheme
-import Material.Color as Color
-import Material.Layout as Layout
-import Material.Elevation as Elevation
-import Material.Grid as Grid exposing (..)
-import Material.Options as Options exposing (css)
 import Html.Lazy exposing (lazy, lazy2)
 import Data.Methodology as Methodology exposing (Methodology)
 import Data.Methodology.Description as Description exposing (Description)
@@ -23,11 +14,18 @@ import Task exposing (Task)
 import Util exposing ((=>), pair, viewIf)
 import Page.Errored exposing (PageLoadError, pageLoadError)
 import Views.Page as Page
+import Material
+import Material.Scheme
+import Material.Color as Color
+import Material.Layout as Layout
+import Material.Elevation as Elevation
+import Material.Grid as Grid exposing (..)
+import Material.Options as Options exposing (css)
 import Json.Encode
-import Json.Decode
-import Json.Decode.Pipeline as Pipe
+import Html.Attributes exposing (..)
 
 
+--import Views.Methodology
 -- MODEL
 --Estado de la aplicacion
 
@@ -90,6 +88,7 @@ view model =
                 )
             , main =
                 [ viewBody model ]
+                --  [ Views.Methodology.viewBody model ]
             }
 
 
@@ -114,9 +113,8 @@ viewBody model =
         5 ->
             viewTools model
 
-        6 ->
-            viewTips model
-
+        -- 6 ->
+        --     viewTips model
         _ ->
             h1 [] [ text "404 Not Found" ]
 
@@ -359,41 +357,37 @@ toolsHtml t =
         div [] (val)
 
 
-viewTips : Model -> Html Msg
-viewTips model =
-    grid []
-        [ cell
-            [ Grid.size All 6, offset All 1 ]
-            [ Options.div
-                [ Elevation.e6
-                , css "margin-bottom" "20px"
-                , css "padding" "20px"
-                ]
-                (renderTips model.methodology.description.tips)
-            ]
-        ]
 
-
-renderTips : List Description.Tips -> List (Html msg)
-renderTips t =
-    List.map tipsHtml t
-
-
-tipsHtml : Description.Tips -> Html msg
-tipsHtml t =
-    let
-        val =
-            [ span
-                [ Json.Encode.string t
-                    |> Html.Attributes.property "innerHTML"
-                ]
-                []
-            ]
-    in
-        div [] (val)
-
-
-
+-- viewTips : Model -> Html Msg
+-- viewTips model =
+--     grid []
+--         [ cell
+--             [ Grid.size All 6, offset All 1 ]
+--             [ Options.div
+--                 [ Elevation.e6
+--                 , css "margin-bottom" "20px"
+--                 , css "padding" "20px"
+--                 ]
+--                 (renderTips model.methodology.description.tips)
+--             ]
+--         ]
+-- renderTips : List Description.Tips -> List (Html msg)
+-- renderTips t =
+--     List.map tipsHtml t
+--
+--
+-- tipsHtml : Description.Tips -> Html msg
+-- tipsHtml t =
+--     let
+--         val =
+--             [ span
+--                 [ Json.Encode.string t
+--                     |> Html.Attributes.property "innerHTML"
+--                 ]
+--                 []
+--             ]
+--     in
+--         div [] (val)
 -- UPDATE
 {- Los usuarios de la aplicacion pueden enviar el mensaje
    seleccionando la respuesta, esta accion alimenta el update mostrando la

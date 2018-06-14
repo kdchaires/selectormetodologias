@@ -12,24 +12,11 @@ import Request.Helpers exposing (apiUrl)
 import Util exposing ((=>))
 
 
-methodologyDecoder : Json.Decode.Decoder Methodology
-methodologyDecoder =
-    Json.Decode.Pipeline.decode Methodology
-        |> Json.Decode.Pipeline.required "id" Json.Decode.int
-        |> Json.Decode.Pipeline.required "name" Json.Decode.string
-        |> Json.Decode.Pipeline.required "abstract" Json.Decode.string
-        |> Json.Decode.Pipeline.required "quality_features" Json.Decode.string
-        |> Json.Decode.Pipeline.required "info" Json.Decode.string
-        |> Json.Decode.Pipeline.required "types" Json.Decode.string
-        |> Json.Decode.Pipeline.required "model" Json.Decode.string
-        |> Json.Decode.Pipeline.required "diagrams" Diagrams.decoderDiagrams
-        |> Json.Decode.Pipeline.required "description" Description.decoderDescription
-
-
 methodologyRequest : Http.Request (Methodology)
 methodologyRequest =
     let
         url =
-            "https://private-15cfb8-selectormetodologias1.apiary-mock.com/methodologies/1"
+            --  "https://private-15cfb8-selectormetodologias1.apiary-mock.com/methodologies/1"
+            "http://192.168.10.11:8088/methodologies/1"
     in
-        Http.get url methodologyDecoder
+        Http.get url Methodology.decoder

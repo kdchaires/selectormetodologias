@@ -21,11 +21,16 @@ import Json.Decode.Pipeline as Pipe
 
 
 type alias Description =
-    { process : List Process
-    , roles : List Roles
-    , artifacts : List Artifacts
-    , practices : List Practices
-    , tips : List Tips
+    { process :
+        List Process
+    , roles :
+        List Roles
+    , artifacts :
+        List Artifacts
+    , practices :
+        List Practices
+    , tips :
+        List Tips
     , tools : List Tools
     }
 
@@ -138,23 +143,11 @@ decoderTools =
         |> Pipe.required "website" Decode.string
 
 
-
--- Tips--
--- type alias Tips =
---     String
-
-
-type alias Tips =
-    String
+type Tips
+    = Tips String
 
 
 decoderTips : Decoder Tips
 decoderTips =
-    Decode.field "tips" Decode.string
-
-
-
--- decoderTips : Decoder Tips
--- decoderTips =
---     Pipe.decode Tips
---         |> Pipe.required "tips" Decode.string
+    Decode.string
+        |> Decode.map Tips

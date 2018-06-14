@@ -24,6 +24,7 @@ import Task exposing (Task)
 import Util exposing ((=>), pair, viewIf)
 import Page.Errored exposing (PageLoadError, pageLoadError)
 import Views.Page as Page
+import Route exposing (Route)
 
 
 -- MODEL
@@ -102,7 +103,7 @@ viewMethodology model methodology =
 type Msg
     = DismissErrors
     | Mdl (Material.Msg Msg)
-    | WantMethodologyDetails Int
+    | WantMethodologyDetails (Int)
 
 
 
@@ -119,5 +120,9 @@ update msg model =
             Material.update Mdl msg_ model
 
         WantMethodologyDetails methodologyId ->
-            -- Send to the details page
-            ( model, Cmd.none )
+            model => Route.modifyUrl Route.Welcome
+
+
+
+-- Send to the details page
+--( model, Cmd.none )
