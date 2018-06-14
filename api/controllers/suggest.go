@@ -4,26 +4,11 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/globalsign/mgo/bson"
 	"github.com/kdchaires/selectormetodologias/api/models"
 )
 
-type MatrixCell struct {
-	Question    bson.ObjectId
-	Methodology int
-	Evaluation  int
-}
-
-type VectorCell struct {
-	Question bson.ObjectId `json:"question"`
-	Answer   int           `json:"value"`
-}
-
-type ResultCell struct {
-	Methodology int
-	Score       int
-}
-
+// SuggestHandler generates a server response as specified by
+// https://selectormetodologias1.docs.apiary.io/#reference/sugerencia/coleccion-de-recomendacion/generar-una-recomendacion
 // TODO Optimize function calls and loops with pass by reference
 func (app *App) SuggestHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "applicaton/json")
@@ -46,7 +31,7 @@ func (app *App) SuggestHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Retrieve the user's answers from the request
 	decoder := json.NewDecoder(r.Body)
-	var vector []VectorCell
+	var vector []models.VectorCell
 
 	err = decoder.Decode(&vector)
 	if err != nil {
@@ -95,7 +80,7 @@ func (app *App) SuggestHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(suggestion)
 }
 
-func matrixMultiplication(matrix []*MatrixCell, vector []VectorCell) map[int]int {
+func matrixMultiplication(matrix []*models.MatrixCell, vector []models.VectorCell) map[int]int {
 	var result = make(map[int]int)
 
 	for _, r := range matrix {
@@ -116,15 +101,15 @@ func matrixMultiplication(matrix []*MatrixCell, vector []VectorCell) map[int]int
 
 func loadEvaluationMatrix(
 	questions []*models.Question,
-	methodologies []*models.EvaluatedMethodology) []*MatrixCell {
+	methodologies []*models.EvaluatedMethodology) []*models.MatrixCell {
 
-	var matrix = make([]*MatrixCell, len(questions)*len(methodologies))
+	var matrix = make([]*models.MatrixCell, len(questions)*len(methodologies))
 
 	for _, m := range methodologies {
 		for _, q := range questions {
 			for _, ev := range q.Evaluations {
 				if m.Methodology == ev.Methodology {
-					matrix = append(matrix, &MatrixCell{
+					matrix = append(matrix, &models.MatrixCell{
 						Question:    q.ID,
 						Methodology: ev.Methodology,
 						Evaluation:  ev.Evaluation,
