@@ -149,21 +149,17 @@ view model =
             , main =
                 [ grid []
                     [ cell
-                        [ Grid.size All 6, offset All 3 ]
-                        [ viewBody model ]
+                        [ Grid.size Tablet 8
+                        , offset Tablet 2
+                        , Grid.size Desktop 8
+                        , offset Desktop 2
+                        , Grid.size Phone 12
+                        , offset Phone 0
+                        ]
+                        [ viewWelcome model ]
                     ]
                 ]
             }
-
-
-viewBody : Model -> Html Msg
-viewBody model =
-    case model.activePage of
-        0 ->
-            viewWelcome model
-
-        _ ->
-            h1 [] [ text "404 Not Found" ]
 
 
 viewWelcome : Model -> Html Msg
@@ -175,8 +171,16 @@ viewWelcome model =
         ]
         [ h3 [] [ text "Bienvenido!" ]
         , welcomeMessage
-        , inputUserInstitute model
-        , inputUserEmail model
+        , grid []
+            [ cell
+                [ Grid.size Desktop 6
+                , Grid.size Tablet 6
+                , Grid.size Phone 12
+                ]
+                [ inputUserInstitute model
+                , inputUserEmail model
+                ]
+            ]
         , hr [] []
         , Button.render Mdl
             [ 0 ]

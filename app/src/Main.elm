@@ -15,6 +15,8 @@ import Material.Typography as Typo
 import Json.Decode exposing (int, string, float, nullable, Decoder)
 import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded)
 import Html.Lazy exposing (lazy, lazy2)
+import Json.Encode as Encode
+import Json.Decode
 
 
 main : Program Config Model Msg
@@ -37,7 +39,7 @@ initialModel config =
     { index = 0
     , questions = []
     , answers = []
-    , score = 0
+    , score = ""
     , mdl = Material.model
     , errorMessage = Nothing
     , config = config
@@ -72,6 +74,45 @@ questionsRequest config =
             (Http.get url questionListDecoder)
 
 
+encodeNewAnswers : List Evaluation -> Encode.Value
+encodeNewAnswers listsAnswers =
+    Encode.list (List.map encodeNewAnswer listsAnswers)
+
+
+encodeNewAnswer : Evaluation -> Encode.Value
+encodeNewAnswer evaluation =
+    let
+        object =
+            [ ( "question", Encode.string evaluation.idQuestion )
+            , ( "value", Encode.int evaluation.value )
+            ]
+    in
+        Encode.object object
+
+
+saveSuggestRequest : Config -> List Evaluation -> Http.Request String
+saveSuggestRequest config listEvaluation =
+    Http.request
+        { --body = encodeNewAnswers listEvaluation |> Http.jsonBody
+          body = Http.emptyBody
+        , expect = Http.expectString
+        , headers = []
+        , method = "POST"
+        , timeout =
+            Nothing
+        , url =
+            config.api_url ++ "/suggest"
+
+        --, url = "https://private-anon-7a05ca6d76-selectormetodologias1.apiary-mock.com/suggest"
+        , withCredentials = False
+        }
+
+
+createdSuggestMsg : Config -> List Evaluation -> Cmd Msg
+createdSuggestMsg config listEvaluation =
+    Http.send CreatedSuggestMsg (saveSuggestRequest config listEvaluation)
+
+
 
 -- MODEL
 --Estado de la aplicacion
@@ -81,7 +122,7 @@ type alias Model =
     { index : Int
     , questions : List Questions
     , answers : List Evaluation
-    , score : Int
+    , score : String
     , mdl : Material.Model
     , errorMessage : Maybe String
     , config : Config
@@ -110,6 +151,13 @@ type alias Config =
     }
 
 
+type alias Links =
+    { href : String
+    , rel : String
+    , tipo : String
+    }
+
+
 newAnswer : String -> Int -> Evaluation
 newAnswer idQuestion value =
     { idQuestion = idQuestion
@@ -129,6 +177,8 @@ type Msg
     = Mdl (Material.Msg Msg)
     | ProcessQuestionRequest (Result Http.Error (List Questions))
     | CheckAnswer String
+    | CreatedSuggestMsg (Result Http.Error String)
+    | Suggest (List Evaluation)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -140,8 +190,7 @@ update msg model =
                     currentQuestion (List.head model.questions)
               in
                 { model
-                    | index = model.index + 1
-                    , questions = List.drop 1 model.questions
+                    | questions = List.drop 1 model.questions
                     , answers =
                         if answer == "Si" then
                             model.answers ++ [ newAnswer question.id 1 ]
@@ -150,6 +199,18 @@ update msg model =
                 }
             , Cmd.none
             )
+
+        Suggest respuestas ->
+            ( model, createdSuggestMsg model.config respuestas )
+
+        CreatedSuggestMsg (Ok a) ->
+            { model | score = a } ! []
+
+        CreatedSuggestMsg (Err error) ->
+            { model
+                | errorMessage = Just (createErrorMessage error)
+            }
+                ! []
 
         ProcessQuestionRequest (Ok questions) ->
             { model | questions = questions } ! []
@@ -178,7 +239,7 @@ createErrorMessage httpError =
             "Server is taking too long to respond. Please try again later."
 
         Http.NetworkError ->
-            "It appears you don't have an Internet connection right now."
+            "It appears you don't have an Internjjjet connection right now."
 
         Http.BadStatus response ->
             response.status.message
@@ -237,6 +298,8 @@ viewBody model =
                 [ h1 [] [ text "" ]
                 , h3 [ class "title" ] [ text "Respuestas" ]
                 , div [] (List.map viewKeyedAnswer model.answers)
+                , button [ onClick (Suggest model.answers) ] [ text "Sugerir metodología" ]
+                , h1 [] [ text (toString model.score) ]
                 ]
 
 
@@ -277,7 +340,7 @@ viewKeyedAnswer evaluations =
 
 viewAnswer : Evaluation -> Html Msg
 viewAnswer evaluations =
-    li [] [ text (evaluations.idQuestion ++ ":" ++ (toString evaluations.value)) ]
+    li [] [ text (evaluations.idQuestion ++ "==" ++ (toString evaluations.value)) ]
 
 
 

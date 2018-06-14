@@ -3,6 +3,7 @@ package models
 import (
 	"errors"
 	"reflect"
+	"strconv"
 
 	"github.com/globalsign/mgo/bson"
 )
@@ -16,6 +17,82 @@ type SimplifiedMethodology struct {
 	Links []*Hateoas    `json:"links"`
 }
 
+// Methodology Documentar
+// TODO Documentar
+type Methodology struct {
+	_ID         bson.ObjectId `json:"id" bson:"_id,omitempty"`
+	Id          string        `json:"id"`
+	Name        string        `json:"name"`
+	Abstract    string        `json:"abstract"`
+	Quality     string        `json:"quality_features"`
+	Info        string        `json:"info"`
+	Type        string        `json:"type"`
+	Model       string        `json:"model"`
+	Diagrams    *Diagrams     `json:"diagrams"`
+	Description *Description  `json:"description"`
+}
+
+// Diagrams Documentar
+// TODO Documentar
+type Diagrams struct {
+	Process   string `json:"process"`
+	Roles     string `json:"roles"`
+	Artifacts string `json:"artifacts"`
+	Practices string `json:"practices"`
+}
+
+// Description Documentar
+// TODO Documentar
+type Description struct {
+	Process   []*Process   `json:"process"`
+	Roles     []*Roles     `json:"roles"`
+	Artifacts []*Artifacts `json:"artifacts"`
+	Practices []*Practices `json:"practices"`
+	Tips      []string     `json:"tips"`
+	Tools     []*Tools     `json:"tools"`
+}
+
+// Process Documentar
+// TODO Documentar
+type Process struct {
+	Stage       int    `json:"stage"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Image       string `json:"image"`
+}
+
+// Roles Documentar
+// TODO Documentar
+type Roles struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Image       string `json:"image"`
+}
+
+// Artifacts Documentar
+// TODO Documentar
+type Artifacts struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Image       string `json:"image"`
+}
+
+// Practices Documentar
+// TODO Documentar
+type Practices struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Image       string `json:"image"`
+}
+
+// Tools Documentar
+// TODO Documentar
+type Tools struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Website     string `json:"website"`
+}
+
 // EvaluatedMethodology is variant of SimplifiedMethodology that adds an extra
 // "id" attribute used while retrieving evaluations from questions.
 type EvaluatedMethodology struct {
@@ -26,7 +103,7 @@ type EvaluatedMethodology struct {
 // EvaluatedMethodologies is a slightly modified version of AllMethodologies
 // that returns an extra field from the database "id".
 // TODO It should be possible to reuse SimplifiedMethodology type if proper
-// consumers are modified or using interface{} as return type?
+//      consumers are modified or using interface{} as return type?
 func (db *DB) EvaluatedMethodologies() ([]*EvaluatedMethodology, error) {
 	var methodologies []EvaluatedMethodology
 
@@ -88,4 +165,24 @@ func (db *DB) AllMethodologies() ([]*SimplifiedMethodology, error) {
 	}
 
 	return pointersOf(methodologies).([]*SimplifiedMethodology), nil
+}
+
+// Methodology uses the existing database connection to read a document
+// from the "methodologies" collection and returns the methodology data by id.
+func (db *DB) Methodology(id string) ([]*Methodology, error) {
+	var methodology []*Methodology
+	c := db.C("methodologies")
+	val, errn := strconv.Atoi(id)
+	if errn != nil {
+		return nil, errors.New(
+			"Unsupported value")
+	}
+
+	err := c.Find(bson.M{"id": val}).All(&methodology)
+	if err != nil {
+		return nil, errors.New(
+			"Can't read database, check permissions or resource names")
+	}
+
+	return methodology, nil
 }
