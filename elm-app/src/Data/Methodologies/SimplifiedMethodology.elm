@@ -6,7 +6,7 @@ import Json.Decode.Pipeline as Pipe
 
 
 type alias SimplifiedMethodology =
-    { id : Int
+    { id : String
     , name :
         String
         --  , links : List Link
@@ -16,7 +16,7 @@ type alias SimplifiedMethodology =
 decoder : Decoder SimplifiedMethodology
 decoder =
     Pipe.decode SimplifiedMethodology
-        |> Pipe.required "id" Decode.int
+        |> Pipe.required "id" Decode.string
         |> Pipe.required "name" Decode.string
 
 

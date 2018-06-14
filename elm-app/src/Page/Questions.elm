@@ -188,7 +188,7 @@ update msg model =
                         if answer == "Si" then
                             model.answers ++ [ newAnswer question.id 1 ]
                         else
-                            model.answers
+                            model.answers ++ [ newAnswer question.id 0 ]
                 }
             , Cmd.none
             )

@@ -14,6 +14,7 @@ type Route
     | Welcome
     | Questions
     | ListMethodologies
+    | Methodology
 
 
 route : Parser (Route -> a) a
@@ -22,6 +23,7 @@ route =
         [ Url.map Welcome (s "welcome")
         , Url.map Questions (s "questions")
         , Url.map ListMethodologies (s "listMethodologies")
+        , Url.map Methodology (s "methodology")
         ]
 
 
@@ -45,6 +47,9 @@ routeToString page =
 
                 ListMethodologies ->
                     [ "listMethodologies" ]
+
+                Methodology ->
+                    [ "methodology" ]
     in
         "#/" ++ String.join "/" pieces
 

@@ -8,6 +8,7 @@ import Page.NotFound as NotFound
 import Page.Welcome as Welcome
 import Page.Questions as Questions
 import Page.ListMethodologies as ListMethodologies
+import Page.Methodology as Methodology
 import Ports
 import Route exposing (Route)
 import Task
@@ -28,6 +29,7 @@ type Page
     | Welcome Welcome.Model
     | Questions Questions.Model
     | ListMethodologies ListMethodologies.Model
+    | Methodology Methodology.Model
 
 
 type PageState
@@ -106,6 +108,11 @@ viewPage isLoading page =
                     |> frame Page.Other
                     |> Html.map ListMethodologiesMsg
 
+            Methodology subModel ->
+                Methodology.view subModel
+                    |> frame Page.Other
+                    |> Html.map MethodologyMsg
+
 
 
 -- SUBSCRIPTIONS --
@@ -152,6 +159,9 @@ pageSubscriptions page =
         ListMethodologies _ ->
             Sub.none
 
+        Methodology _ ->
+            Sub.none
+
 
 
 --
@@ -163,9 +173,11 @@ type Msg
     | WelcomeLoaded (Result PageLoadError Welcome.Model)
     | QuestionsLoaded (Result PageLoadError Questions.Model)
     | ListMethodologiesLoaded (Result PageLoadError ListMethodologies.Model)
+    | MethodologyLoaded (Result PageLoadError Methodology.Model)
     | WelcomeMsg Welcome.Msg
     | QuestionsMsg Questions.Msg
     | ListMethodologiesMsg ListMethodologies.Msg
+    | MethodologyMsg Methodology.Msg
 
 
 setRoute : Maybe Route -> Model -> ( Model, Cmd Msg )
@@ -193,6 +205,9 @@ setRoute maybeRoute model =
 
             Just (Route.ListMethodologies) ->
                 transition ListMethodologiesLoaded (ListMethodologies.init)
+
+            Just (Route.Methodology) ->
+                transition MethodologyLoaded (Methodology.init)
 
 
 pageErrored : Model -> ActivePage -> String -> ( Model, Cmd msg )
@@ -238,6 +253,12 @@ updatePage page msg model =
             ( QuestionsLoaded (Err error), _ ) ->
                 { model | pageState = Loaded (Errored error) } => Cmd.none
 
+            ( MethodologyLoaded (Ok subModel), _ ) ->
+                { model | pageState = Loaded (Methodology subModel) } => Cmd.none
+
+            ( MethodologyLoaded (Err error), _ ) ->
+                { model | pageState = Loaded (Errored error) } => Cmd.none
+
             ( ListMethodologiesLoaded (Ok subModel), _ ) ->
                 { model | pageState = Loaded (ListMethodologies subModel) } => Cmd.none
 
@@ -249,6 +270,9 @@ updatePage page msg model =
 
             ( QuestionsMsg subMsg, Questions subModel ) ->
                 toPage Questions QuestionsMsg (Questions.update) subMsg subModel
+
+            ( MethodologyMsg subMsg, Methodology subModel ) ->
+                toPage Methodology MethodologyMsg (Methodology.update) subMsg subModel
 
             ( _, NotFound ) ->
                 -- Disregard incoming messages when we're on the

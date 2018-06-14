@@ -6,22 +6,7 @@ import Http
 import Json.Decode exposing (int, string, float, nullable, Decoder)
 import Json.Decode.Pipeline as Pipe
 import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded)
-
-
--- linkDecoder : Json.Decode.Decoder Link
--- linkDecoder =
---     Pipe.decode Link
---         |> Pipe.required "href" Json.Decode.string
---         |> Pipe.required "rel" Json.Decode.string
---         |> Pipe.required "type" Json.Decode.string
---
---
--- methodologyDecoder : Json.Decode.Decoder SimplifiedMethodology
--- methodologyDecoder =
---     Pipe.decode SimplifiedMethodology
---         |> Pipe.required "id" Json.Decode.string
---         |> Pipe.required "name" Json.Decode.string
---         |> Pipe.required "links" (Json.Decode.list linkDecoder)
+import Request.Helpers exposing (apiUrll)
 
 
 linkDecoder : Json.Decode.Decoder Link
@@ -40,7 +25,7 @@ methodologiesListDecoder =
 methodologyDecoder : Json.Decode.Decoder SimplifiedMethodology
 methodologyDecoder =
     Pipe.decode SimplifiedMethodology
-        |> Pipe.required "id" Json.Decode.int
+        |> Pipe.required "id" Json.Decode.string
         |> Pipe.required "name" Json.Decode.string
 
 
@@ -52,10 +37,6 @@ getMethodologies : Http.Request (List SimplifiedMethodology)
 getMethodologies =
     let
         url =
-            "https://localhost:3000/methodologies"
+            apiUrll ("/methodologies")
     in
         Http.get url methodologiesListDecoder
-
-
-
---Http.get url (Json.Decode.list methodologyDecoder)
