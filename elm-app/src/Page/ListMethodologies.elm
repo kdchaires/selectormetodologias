@@ -19,12 +19,15 @@ import Material.Textfield as Textfield
 import Html.Lazy exposing (lazy, lazy2)
 import Data.Methodologies.Link as Link exposing (Link)
 import Data.Methodologies.SimplifiedMethodology as SimplifiedMethodology exposing (SimplifiedMethodology)
+import Data.Methodology exposing (Methodology)
 import Request.ListMethodologies
+import Request.Methodology
 import Task exposing (Task)
 import Util exposing ((=>), pair, viewIf)
 import Page.Errored exposing (PageLoadError, pageLoadError)
 import Views.Page as Page
 import Route exposing (Route)
+import Json.Decode as Decode exposing (Decoder, decodeString, field, string)
 
 
 -- MODEL
@@ -81,13 +84,19 @@ viewMethodology model methodology =
             ]
             [ h3 [] [ text methodology.name ]
             , hr [] []
-            , Button.render Mdl
-                [ 0 ]
-                model.mdl
-                [ Button.colored
-                , Options.onClick <| WantMethodologyDetails methodology.id
+            , h1 [] [ text (toString model.index) ]
+            , button
+                [ class "btn btn-lg btn-primary pull-xs-right"
+                , onClick (WantMethodologyDetails methodology.id)
                 ]
                 [ text "Ver detalles" ]
+              -- , Button.render Mdl
+              --     [ 0 ]
+              --     model.mdl
+              --     [ Button.colored
+              --     , Options.onClick <| WantMethodologyDetails methodology.id
+              --     ]
+              --     [ text "Ver detalles" ]
             ]
         ]
 
@@ -104,6 +113,7 @@ type Msg
     = DismissErrors
     | Mdl (Material.Msg Msg)
     | WantMethodologyDetails (String)
+    | MethodologyFeedbackResponse (Result Http.Error Methodology)
 
 
 
@@ -120,9 +130,21 @@ update msg model =
             Material.update Mdl msg_ model
 
         WantMethodologyDetails methodologyId ->
-            model => Route.modifyUrl Route.Welcome
+            let
+                _ =
+                    Debug.log methodologyId methodologyId
+            in
+                { model | errors = [] }
+                    => Http.send MethodologyFeedbackResponse (Request.Methodology.methodologyRequest methodologyId)
+
+        MethodologyFeedbackResponse (Err error) ->
+            { model | errors = [] }
+                => Cmd.none
+
+        MethodologyFeedbackResponse (Ok _) ->
+            model => Route.modifyUrl Route.Methodology
 
 
 
--- Send to the details page
---( model, Cmd.none )
+-- WantMethodologyDetails methodologyId ->
+--     { model | index = 3 } => Cmd.none

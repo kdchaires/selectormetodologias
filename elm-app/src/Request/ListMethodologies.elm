@@ -37,6 +37,6 @@ getMethodologies : Http.Request (List SimplifiedMethodology)
 getMethodologies =
     let
         url =
-            apiUrll ("/methodologies")
+            apiUrll ("/methodologiese")
     in
         Http.get url methodologiesListDecoder

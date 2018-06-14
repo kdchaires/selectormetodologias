@@ -44,7 +44,7 @@ init : Task PageLoadError Model
 init =
     let
         methodologySelected =
-            Request.Methodology.methodologyRequest
+            Request.Methodology.methodologyRequest "1"
                 |> Http.toTask
 
         handleLoadError _ =
