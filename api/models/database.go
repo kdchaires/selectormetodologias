@@ -25,7 +25,7 @@ type Hateoas struct {
 type Datastore interface {
 	AllQuestions() ([]*Question, error)
 	SaveFeedback(*Feedback) error
-	Methodology(id string) ([]*Methodology, error)
+	Methodology(id string) (*Methodology, error)
 	AllMethodologies() ([]*SimplifiedMethodology, error)
 	EvaluatedMethodologies() ([]*EvaluatedMethodology, error)
 }
