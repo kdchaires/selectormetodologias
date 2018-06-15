@@ -5,7 +5,7 @@ import Http
 import Request.Helpers exposing (apiUrl, apiUrll)
 
 
-methodologyRequest : String -> Http.Request (Methodology)
+methodologyRequest : Int -> Http.Request (Methodology)
 methodologyRequest methodologyId =
     let
         url =

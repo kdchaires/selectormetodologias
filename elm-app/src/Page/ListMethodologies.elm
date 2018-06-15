@@ -112,7 +112,7 @@ viewMethodology model methodology =
 type Msg
     = DismissErrors
     | Mdl (Material.Msg Msg)
-    | WantMethodologyDetails (String)
+    | WantMethodologyDetails (Int)
     | MethodologyFeedbackResponse (Result Http.Error Methodology)
 
 
@@ -132,7 +132,7 @@ update msg model =
         WantMethodologyDetails methodologyId ->
             let
                 _ =
-                    Debug.log methodologyId methodologyId
+                    Debug.log (toString methodologyId) methodologyId
             in
                 { model | errors = [] }
                     => Http.send MethodologyFeedbackResponse (Request.Methodology.methodologyRequest methodologyId)

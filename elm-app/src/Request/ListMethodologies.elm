@@ -25,7 +25,7 @@ methodologiesListDecoder =
 methodologyDecoder : Json.Decode.Decoder SimplifiedMethodology
 methodologyDecoder =
     Pipe.decode SimplifiedMethodology
-        |> Pipe.required "id" Json.Decode.string
+        |> Pipe.required "id" Json.Decode.int
         |> Pipe.required "name" Json.Decode.string
 
 
@@ -37,6 +37,6 @@ getMethodologies : Http.Request (List SimplifiedMethodology)
 getMethodologies =
     let
         url =
-            apiUrll ("/methodologiese")
+            apiUrll ("/methodologies")
     in
         Http.get url methodologiesListDecoder
