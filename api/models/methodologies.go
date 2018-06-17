@@ -20,16 +20,15 @@ type SimplifiedMethodology struct {
 // Methodology Documentar
 // TODO Documentar
 type Methodology struct {
-	_ID         bson.ObjectId `json:"id" bson:"_id,omitempty"`
-	Id          string        `json:"id"`
-	Name        string        `json:"name"`
-	Abstract    string        `json:"abstract"`
-	Quality     string        `json:"quality_features"`
-	Info        string        `json:"info"`
-	Type        string        `json:"type"`
-	Model       string        `json:"model"`
-	Diagrams    *Diagrams     `json:"diagrams"`
-	Description *Description  `json:"description"`
+	ID          string       `json:"id"`
+	Name        string       `json:"name"`
+	Abstract    string       `json:"abstract"`
+	Quality     string       `json:"quality_features"`
+	Info        string       `json:"info"`
+	Type        string       `json:"type"`
+	Model       string       `json:"model"`
+	Diagrams    *Diagrams    `json:"diagrams"`
+	Description *Description `json:"description"`
 }
 
 // Diagrams Documentar
