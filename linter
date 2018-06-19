@@ -6,7 +6,7 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-./app/linter
+./elm-app/linter
 if [ $? -ne 0 ]; then
   printf >&2 'linter for ELM APP failed, please fix before committing by running "./app/linter".\n'
   exit 1
