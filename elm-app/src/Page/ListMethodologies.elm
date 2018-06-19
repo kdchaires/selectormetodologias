@@ -28,7 +28,7 @@ import Route exposing (Route)
 
 
 -- MODEL
---Estado de la aplicacion
+--Estado de la aplicación
 
 
 type alias Model =
@@ -103,7 +103,7 @@ viewMethodology model methodology =
 type Msg
     = DismissErrors
     | Mdl (Material.Msg Msg)
-    | WantMethodologyDetails (String)
+    | WantMethodologyDetails String
 
 
 

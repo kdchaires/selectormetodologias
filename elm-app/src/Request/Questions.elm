@@ -28,6 +28,7 @@ questionDecoder =
 questionsRequest : Http.Request (List Question)
 questionsRequest =
     let
-        url = apiUrll("/questions")
+        url =
+            apiUrll ("/questions")
     in
         Http.get url questionListDecoder

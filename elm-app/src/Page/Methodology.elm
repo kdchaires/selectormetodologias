@@ -27,7 +27,7 @@ import Html.Attributes exposing (..)
 
 --import Views.Methodology
 -- MODEL
---Estado de la aplicacion
+-- Estado de la aplicación
 
 
 type alias Model =
@@ -69,11 +69,12 @@ view model =
             , Layout.fixedTabs
             ]
             { header =
-                [ h2 [Html.Attributes.align "center"] [ text model.methodology.name ] ]
-                -- [ Options.styled p
-                --     [ Typo.display3 ]
-                --     [ text "Bienvenido" ]
-                -- ]
+                [ h2 [ Html.Attributes.align "center" ] [ text model.methodology.name ] ]
+
+            -- [ Options.styled p
+            --     [ Typo.display3 ]
+            --     [ text "Bienvenido" ]
+            -- ]
             , drawer = []
             , tabs =
                 ( [ text "Resumen"
@@ -88,7 +89,8 @@ view model =
                 )
             , main =
                 [ viewBody model ]
-                --  [ Views.Methodology.viewBody model ]
+
+            --  [ Views.Methodology.viewBody model ]
             }
 
 
@@ -138,7 +140,7 @@ viewAbstract model =
                 , css "margin-bottom" "20px"
                 , css "padding" "20px"
                 ]
-                [ h1 [Html.Attributes.align "center"] [ text "Resumen" ]
+                [ h1 [ Html.Attributes.align "center" ] [ text "Resumen" ]
                 , textHtml model.methodology.abstract
                 ]
             ]
@@ -172,7 +174,7 @@ processHtml t =
             [ h1
                 [ Json.Encode.string t.name
                     |> Html.Attributes.property "innerHTML"
-                  , Html.Attributes.align "center"
+                , Html.Attributes.align "center"
                 ]
                 []
             , span
@@ -182,7 +184,7 @@ processHtml t =
                 []
             , img
                 [ src t.image
-                , style [ ( "width", "100%" )]
+                , style [ ( "width", "100%" ) ]
                 ]
                 []
             ]
@@ -217,7 +219,7 @@ rolesHtml t =
             [ h1
                 [ Json.Encode.string t.name
                     |> Html.Attributes.property "innerHTML"
-                  , Html.Attributes.align "center"
+                , Html.Attributes.align "center"
                 ]
                 []
             , span
@@ -227,7 +229,7 @@ rolesHtml t =
                 []
             , img
                 [ src t.image
-                , style [ ( "width", "100%" )]
+                , style [ ( "width", "100%" ) ]
                 ]
                 []
             ]
@@ -262,7 +264,7 @@ artifactsHtml t =
             [ h1
                 [ Json.Encode.string t.name
                     |> Html.Attributes.property "innerHTML"
-                  , Html.Attributes.align "center"
+                , Html.Attributes.align "center"
                 ]
                 []
             , span
@@ -272,7 +274,7 @@ artifactsHtml t =
                 []
             , img
                 [ src t.image
-                , style [ ( "width", "100%" )]
+                , style [ ( "width", "100%" ) ]
                 ]
                 []
             ]
@@ -307,7 +309,7 @@ practicesHtml t =
             [ h1
                 [ Json.Encode.string t.name
                     |> Html.Attributes.property "innerHTML"
-                  , Html.Attributes.align "center"
+                , Html.Attributes.align "center"
                 ]
                 []
             , span
@@ -317,7 +319,7 @@ practicesHtml t =
                 []
             , img
                 [ src t.image
-                , style [ ( "width", "100%" )]
+                , style [ ( "width", "100%" ) ]
                 ]
                 []
             ]
@@ -352,7 +354,7 @@ toolsHtml t =
             [ h1
                 [ Json.Encode.string t.name
                     |> Html.Attributes.property "innerHTML"
-                  , Html.Attributes.align "center"
+                , Html.Attributes.align "center"
                 ]
                 []
             , span

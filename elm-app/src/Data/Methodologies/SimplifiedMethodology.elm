@@ -9,7 +9,8 @@ type alias SimplifiedMethodology =
     { id : String
     , name :
         String
-        --  , links : List Link
+
+    --  , links : List Link
     }
 
 

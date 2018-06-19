@@ -22,7 +22,8 @@ type alias Model =
     , email : String
     , institution :
         String
-        -- TODO Make createdAt a Date rather than a String
+
+    -- TODO Make createdAt a Date rather than a String
     , createdAt : String
     , finished : Bool
     , description : String

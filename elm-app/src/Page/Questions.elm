@@ -82,19 +82,18 @@ viewBody model =
                     [ text question.question ]
                 , div [] (List.map answer [ "Si", "No" ])
                 ]
+        else if model.suggestion.name == "" then
+            div []
+                [ button [ onClick (Suggest model.answers) ] [ text "Sugerir metodología" ]
+                ]
         else
-            if model.suggestion.name == "" then
-                div []
-                    [ button [ onClick (Suggest model.answers) ] [ text "Sugerir metodología" ]
-                    ]
-            else
-                div []
-                    -- [ button [ onClick (Suggest model.answers) ] [ text "Sugerir metodología" ]
-                    -- En el boton va el mensaje responsable de cargar detalles de motodología
-                    [ button [ ] [ text model.suggestion.name ]
-                    , h1 [] [ text model.suggestion.name ]
-                    , h2 [] [ text (toString model.suggestion.score) ]
-                    ]
+            div []
+                -- [ button [ onClick (Suggest model.answers) ] [ text "Sugerir metodología" ]
+                -- En el boton va el mensaje responsable de cargar detalles de motodología
+                [ button [] [ text model.suggestion.name ]
+                , h1 [] [ text model.suggestion.name ]
+                , h2 [] [ text (toString model.suggestion.score) ]
+                ]
 
 
 

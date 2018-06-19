@@ -194,19 +194,19 @@ setRoute maybeRoute model =
             Nothing ->
                 { model | pageState = Loaded NotFound } => Cmd.none
 
-            Just (Route.Root) ->
+            Just Route.Root ->
                 model => Route.modifyUrl Route.Welcome
 
-            Just (Route.Welcome) ->
+            Just Route.Welcome ->
                 { model | pageState = Loaded (Welcome Welcome.initialModel) } => Cmd.none
 
-            Just (Route.Questions) ->
+            Just Route.Questions ->
                 transition QuestionsLoaded (Questions.init)
 
-            Just (Route.ListMethodologies) ->
+            Just Route.ListMethodologies ->
                 transition ListMethodologiesLoaded (ListMethodologies.init)
 
-            Just (Route.Methodology) ->
+            Just Route.Methodology ->
                 transition MethodologyLoaded (Methodology.init)
 
 
