@@ -4,7 +4,7 @@ import Expect
 import Fuzz exposing (int, string)
 import Json.Decode exposing (decodeValue)
 import Json.Encode as Json
-import Data.Methodology.Description as Description exposing (..)
+import Data.Methodology.Description exposing (..)
 import Test exposing (..)
 
 
@@ -64,17 +64,20 @@ suite =
                     decodeValue decoderPractices json
                         |> Expect.equal
                             (Ok { name = name, description = description, image = image })
-        , fuzz string "TipsDecoder maps to a Tips" <|
+        , fuzz (Fuzz.list string) "TipsDecoder maps to a Tips" <|
             \tips ->
                 let
                     json =
                         Json.object
-                            [ ( "tips", Json.string tips )
+                            [ ( "tips", Json.list (List.map Json.string tips) )
                             ]
+
+                    tipsList =
+                        List.map Tip tips
                 in
                     decodeValue decoderTips json
                         |> Expect.equal
-                            (Ok { tips = tips })
+                            (Ok tipsList)
         , fuzz3 string string string "ToolsDecoder maps to a Tools" <|
             \name description website ->
                 let

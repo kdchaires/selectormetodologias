@@ -10,7 +10,7 @@ module Data.Methodology.Description
         , decoderArtifacts
         , Practices
         , decoderPractices
-        , Tips
+        , Tip(..)
         , decoderTips
         , Tools
         , decoderTools
@@ -30,7 +30,7 @@ type alias Description =
     , practices :
         List Practices
     , tips :
-        List Tips
+        List Tip
     , tools : List Tools
     }
 
@@ -42,7 +42,7 @@ decoderDescription =
         |> Pipe.required "roles" (Decode.list decoderRoles)
         |> Pipe.required "artifacts" (Decode.list decoderArtifacts)
         |> Pipe.required "practices" (Decode.list decoderPractices)
-        |> Pipe.required "tips" (Decode.list decoderTips)
+        |> Pipe.required "tips" (Decode.list decoderTip)
         |> Pipe.required "tools" (Decode.list decoderTools)
 
 
@@ -143,11 +143,15 @@ decoderTools =
         |> Pipe.required "website" Decode.string
 
 
-type Tips
-    = Tips String
+type Tip
+    = Tip String
 
 
-decoderTips : Decoder Tips
+decoderTip : Decoder Tip
+decoderTip =
+    Decode.map Tip Decode.string
+
+
+decoderTips : Decoder (List Tip)
 decoderTips =
-    Decode.string
-        |> Decode.map Tips
+    Decode.field "tips" (Decode.list decoderTip)
